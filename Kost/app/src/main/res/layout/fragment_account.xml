@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.AccountFragment"
+    android:background="@color/colorBg"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="16sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Register"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+</LinearLayout>

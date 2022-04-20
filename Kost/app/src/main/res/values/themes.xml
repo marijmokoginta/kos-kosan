@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Kost" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSecondaryVariant">@color/colorPrimary</item>
+        <item name="colorOnSecondary">#091B53</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.PraUAS.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PraUAS.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="success_dialog_animation">
+        <item name="android:windowEnterAnimation">@android:anim/bounce_interpolator</item>
+        <item name="android:windowExitAnimation">@android:anim/bounce_interpolator</item>
+    </style>
+</resources>

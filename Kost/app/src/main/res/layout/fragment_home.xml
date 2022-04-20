@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.HomeFragment">
+
+    <!-- scroll content wrap-->
+    <ScrollView
+        android:id="@+id/sc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- main content wrap -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- header layout -->
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/header_bg"
+                android:padding="4dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/appHomeTittle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cari Kost-kost an area \nGorontalo"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginStart="16dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="develop by marij mokoginta"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="25dp"/>
+            </LinearLayout>
+
+            <!-- highlight top kost -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardUseCompatPadding="true"
+                android:elevation="4dp">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/viewArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- banner app promotion -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:src="@drawable/ic_house"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- kost filter area 1 -->
+            <LinearLayout
+                android:id="@+id/filter1Wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:background="@color/colorPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:padding="6dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/titleKostFilter1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:layout_marginTop="8dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/white"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnDetailFilter1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="lihat semua"
+                        android:textStyle="italic"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_stroke"
+                        android:textAllCaps="false"
+                        android:fontFamily="@font/poppins"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/kostArea1"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <!-- kost filter area 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleKostFilter2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:textSize="18sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/kostArea2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+
+            <!-- highlight new kost -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/light_gray"
+                    android:src="@drawable/ic_house"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- kost filter area 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleKostFilter3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginStart="16dp"
+                    android:textSize="18sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/kostArea3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- action bar -->
+    <LinearLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/search_bg"
+            android:textColor="@color/text_color"
+            android:padding="6dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:fontFamily="@font/poppins"
+            android:text="cari kost"/>
+
+        <ImageButton
+            android:id="@+id/btnNotification"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_notifications"
+            android:scaleType="centerInside"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
