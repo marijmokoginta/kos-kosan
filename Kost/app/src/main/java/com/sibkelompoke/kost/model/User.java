@@ -4,10 +4,13 @@ import static com.sibkelompoke.kost.constant.KostKonstan.GUEST;
 
 public class User {
     private String id;
+    private String namaLengkap;
     private String username;
     private String password;
     private String role;
     private String noTelepon;
+    private String imageUrl;
+    private String pekerjaan;
 
     public User () {
         this.role = GUEST;
@@ -24,6 +27,22 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNamaLengkap() {
+        return namaLengkap;
+    }
+
+    public void setNamaLengkap(String namaLengkap) {
+        this.namaLengkap = namaLengkap;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getRole() {
@@ -56,5 +75,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPekerjaan() {
+        return pekerjaan;
+    }
+
+    public void setPekerjaan(String pekerjaan) {
+        this.pekerjaan = pekerjaan;
     }
 }

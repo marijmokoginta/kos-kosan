@@ -7,7 +7,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="trans">#DDDEEA</color>
-    <color name="light_blue">#5D9EFD</color>
+    <color name="light_blue">#EDF4FE</color>
     <color name="red">#DC3545</color>
     <color name="light_red">#EFB5BA</color>
+    <color name="green">#1AB0B0</color>
+    <color name="orange">#FF7443</color>
+    <color name="pink">#FA5A7D</color>
+    <color name="purple">#8676FE</color>
+    <color name="dark_blue">#172F4F</color>
 </resources>

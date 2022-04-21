@@ -24,5 +24,11 @@ public class KostKonstan {
     public static final String ADMIN = "admin";
     public static final String USER  = "user";
 
+    // dashboard user item
+    public static final String PEMBAYARAN = "Pembayaran";
+    public static final String PESAN = "Pesan";
+    public static final String CATATAN = "Catatan";
+    public static final String PENGATURAN = "Pengaturan";
+
     public static final String DEFAULT_IMG_URL = "https://firebasestorage.googleapis.com/v0/b/aplikasi-pemesan-kos-kosan.appspot.com/o/kost.jpg?alt=media&token=89c10aa5-b25c-4177-ae30-63d0847f2017";
 }

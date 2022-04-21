@@ -1,19 +1,15 @@
 package com.sibkelompoke.kost.fragment;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -21,10 +17,8 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.database.KostData;
-import com.sibkelompoke.kost.model.Alamat;
 import com.sibkelompoke.kost.model.Kost;
 
 public class DashboardFragment extends Fragment {
@@ -40,7 +34,7 @@ public class DashboardFragment extends Fragment {
     private ScrollView mainContent;
 
     // vars
-    Kost kost;
+    private Kost kost;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -61,11 +55,6 @@ public class DashboardFragment extends Fragment {
 
         if (role.equals("admin")) {
             initAdminView(v);
-
-            kost = kostData.findByUserId(userId);
-            namaKost.setText(kost.getNamaKost());
-            waktuBukaKost.setText(kost.getWaktuBukaKost());
-            tipeKost.setText(kost.getTipeKost());
         } else if (role.equals("user")) {
             initView(v);
             isNotLoggedin.setVisibility(View.GONE);
@@ -112,9 +101,6 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initAdminView(View v) {
-        namaKost = v.findViewById(R.id.adminNamaKost);
-        waktuBukaKost = v.findViewById(R.id.adminKostWaktuBuka);
-        tipeKost = v.findViewById(R.id.adminKostTipe);
     }
 
     private void initView(View v) {

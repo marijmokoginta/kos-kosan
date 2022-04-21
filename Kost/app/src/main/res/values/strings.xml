@@ -16,4 +16,7 @@
     <string name="username_no_telepon">username/no telepon</string>
     <string name="daftar">Daftar</string>
     <string name="text_not_allowed">Silahkan masuk terlebih dahulu untuk menikmati fitur ini</string>
+    <string name="pembayaran">Pembayaran</string>
+    <string name="Pesan">Pesan</string>
+    <string name="catatan">Catatan</string>
 </resources>
