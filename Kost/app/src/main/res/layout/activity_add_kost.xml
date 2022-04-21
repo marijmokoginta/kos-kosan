@@ -592,6 +592,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Buat Kost"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textAllCaps="false"
                     android:background="@color/colorPrimary" />
 

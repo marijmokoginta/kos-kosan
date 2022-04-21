@@ -10,7 +10,10 @@ import static com.sibkelompoke.kost.constant.KostKonstan.MISSING;
 import static com.sibkelompoke.kost.constant.KostKonstan.SUWAWA;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,13 +31,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.sibkelompoke.kost.DetailKost;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.adapter.KostAdapter;
 import com.sibkelompoke.kost.adapter.KostAreaAdapter;
-import com.sibkelompoke.kost.database.KostData;
+import com.sibkelompoke.kost.service.KostData;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.KostArea;
 
@@ -42,11 +47,10 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     private KostData kostData;
+    private boolean bounded;
 
-    String userId, role;
+    private String userId, role;
 
     // UI komponent
     private RecyclerView kostMainArea, kostArea1, kostArea2, viewArea;
@@ -54,14 +58,6 @@ public class HomeFragment extends Fragment {
     private TextView search;
     private ImageButton btnNotofication;
     private ImageView banner;
-
-    private KostAreaAdapter kostAreaAdapter;
-
-    private KostAdapter kostAdapter, kostsFiltered1Adapter, kostFiltered2Adapter, kostFiltered3Adapter;
-    private ArrayList<Kost> kosts;
-    private ArrayList<Kost> kostsFiltered1;
-    private ArrayList<Kost> kostsFiltered2;
-    private ArrayList<Kost> kostsFiltered3;
 
     private ArrayList<KostArea> areas;
 
@@ -78,29 +74,29 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        kosts = new ArrayList<>();
-        kostsFiltered1 = new ArrayList<>();
-        kostsFiltered2 = new ArrayList<>();
-        kostsFiltered3 = new ArrayList<>();
+        ArrayList<Kost> kosts = new ArrayList<>();
+        ArrayList<Kost> kostsFiltered1 = new ArrayList<>();
+        ArrayList<Kost> kostsFiltered2 = new ArrayList<>();
+        ArrayList<Kost> kostsFiltered3 = new ArrayList<>();
 
         initUiView(view);
 
         getDataAreas();
-        kostAreaAdapter = new KostAreaAdapter(getContext(), areas);
+        KostAreaAdapter kostAreaAdapter = new KostAreaAdapter(getContext(), areas);
         viewArea.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         viewArea.setAdapter(kostAreaAdapter);
 
-        kostAdapter = new KostAdapter(getContext(), kosts);
-        kostsFiltered1Adapter = new KostAdapter(getContext(), kostsFiltered1);
-        kostFiltered2Adapter = new KostAdapter(getContext(), kostsFiltered2);
-        kostFiltered3Adapter = new KostAdapter(getContext(), kostsFiltered3);
+        KostAdapter kostAdapter = new KostAdapter(getContext(), kosts);
+        KostAdapter kostsFiltered1Adapter = new KostAdapter(getContext(), kostsFiltered1);
+        KostAdapter kostFiltered2Adapter = new KostAdapter(getContext(), kostsFiltered2);
+        KostAdapter kostFiltered3Adapter = new KostAdapter(getContext(), kostsFiltered3);
 
         // main layout
         kostMainArea.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         kostMainArea.setAdapter(kostAdapter);
         adapterClickListener(kostAdapter);
-        titleKostArea1.setText("Kost-kostan terbaru :");
         kostData.findAll(kostAdapter, kosts);
+        titleKostArea1.setText("Kost-kostan terbaru :");
 
         // layout filter 1
         kostArea1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -132,6 +128,34 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        Intent intent = new Intent(getContext(), KostData.class);
+        requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            bounded = true;
+            KostData.LocalBinder binder = (KostData.LocalBinder) iBinder;
+            kostData = binder.getInstance();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            bounded = false;
+            kostData = null;
+            Toast.makeText(getContext(), "gagal memuat", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (bounded) {
+            requireActivity().unbindService(connection);
+            bounded = false;
+        }
     }
 
     private void adapterClickListener(KostAdapter adapter) {

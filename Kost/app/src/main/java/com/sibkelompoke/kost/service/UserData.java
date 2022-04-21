@@ -1,8 +1,4 @@
-package com.sibkelompoke.kost.database;
-
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
+package com.sibkelompoke.kost.service;
 
 import androidx.annotation.NonNull;
 
@@ -14,7 +10,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.sibkelompoke.kost.model.User;
 
 import java.util.ArrayList;

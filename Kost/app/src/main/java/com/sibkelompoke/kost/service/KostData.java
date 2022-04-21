@@ -1,6 +1,13 @@
-package com.sibkelompoke.kost.database;
+package com.sibkelompoke.kost.service;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.adapter.KostAdapter;
@@ -8,8 +15,10 @@ import com.sibkelompoke.kost.model.Kost;
 
 import java.util.ArrayList;
 
-public class KostData {
+public class KostData extends Service {
     private final String TAG = "KostData";
+
+    private IBinder mBinder = new LocalBinder();
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -17,6 +26,12 @@ public class KostData {
 
     public KostData() {
         kost = new Kost();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
     }
 
     boolean saved;
@@ -95,5 +110,11 @@ public class KostData {
             }
         });
         return kosts;
+    }
+
+    public class LocalBinder extends Binder {
+        public KostData getInstance () {
+            return KostData.this;
+        }
     }
 }

@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.sibkelompoke.kost.database.UserData;
+import com.sibkelompoke.kost.service.UserData;
 import com.sibkelompoke.kost.model.User;
 
 public class Register extends AppCompatActivity {

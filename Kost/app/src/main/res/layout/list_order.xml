@@ -44,12 +44,13 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/colorPrimary"/>
                 <ImageButton
+                    android:id="@+id/showDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerInside"
                     android:background="@color/white"
                     android:layout_weight="4"
-                    android:src="@drawable/ic_info" />
+                    android:src="@drawable/ic_circle_chevron_down" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/userOrderDetail"

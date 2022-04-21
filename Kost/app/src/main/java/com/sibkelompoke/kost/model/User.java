@@ -1,8 +1,12 @@
 package com.sibkelompoke.kost.model;
 
 import static com.sibkelompoke.kost.constant.KostKonstan.GUEST;
+import static com.sibkelompoke.kost.constant.KostKonstan.MISSING;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
     private String id;
     private String namaLengkap;
     private String username;
@@ -13,6 +17,8 @@ public class User {
     private String pekerjaan;
 
     public User () {
+        this.id = MISSING;
+        this.username = GUEST;
         this.role = GUEST;
     }
 
@@ -20,6 +26,29 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
+    protected User(Parcel in) {
+        id = in.readString();
+        namaLengkap = in.readString();
+        username = in.readString();
+        password = in.readString();
+        role = in.readString();
+        noTelepon = in.readString();
+        imageUrl = in.readString();
+        pekerjaan = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -83,5 +112,22 @@ public class User {
 
     public void setPekerjaan(String pekerjaan) {
         this.pekerjaan = pekerjaan;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(namaLengkap);
+        parcel.writeString(username);
+        parcel.writeString(password);
+        parcel.writeString(role);
+        parcel.writeString(noTelepon);
+        parcel.writeString(imageUrl);
+        parcel.writeString(pekerjaan);
     }
 }

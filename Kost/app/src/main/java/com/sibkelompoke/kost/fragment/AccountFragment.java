@@ -25,8 +25,9 @@ import com.sibkelompoke.kost.MainActivity;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.Register;
 import com.sibkelompoke.kost.TermAndConditions;
-import com.sibkelompoke.kost.database.KostData;
+import com.sibkelompoke.kost.service.KostData;
 import com.sibkelompoke.kost.model.Kost;
+import com.sibkelompoke.kost.model.User;
 
 import java.util.ArrayList;
 
@@ -98,7 +99,9 @@ public class AccountFragment extends Fragment {
             btnLogout.setOnClickListener(v -> {
                 editor.clear().apply();
 
-                startActivity(new Intent(getContext(), MainActivity.class));
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.putExtra("user", new User());
+                startActivity(intent);
                 requireActivity().finish();
 
                 Toast.makeText(getContext(), "logout", Toast.LENGTH_SHORT).show();

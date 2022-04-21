@@ -19,4 +19,7 @@
     <string name="pembayaran">Pembayaran</string>
     <string name="Pesan">Pesan</string>
     <string name="catatan">Catatan</string>
+    <string name="admin_tagline">Kelola dan kembangkan kost anda agar menarik banyak pelanggan</string>
+    <string name="promosi">Promosi</string>
+    <string name="promosi_sub">Tambahkan banner promosi kost anda</string>
 </resources>

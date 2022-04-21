@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.R;
-import com.sibkelompoke.kost.database.KostData;
+import com.sibkelompoke.kost.service.KostData;
 import com.sibkelompoke.kost.model.Kost;
 
 public class DashboardFragment extends Fragment {
+    private final String TAG = "DashboardFragment";
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private KostData kostData;
@@ -47,6 +49,8 @@ public class DashboardFragment extends Fragment {
         String username = getArguments().getString("username");
         String userId = getArguments().getString("userId");
 
+        Log.d(TAG, "user id : " + userId);
+
         int layout = R.layout.fragment_dashboard;
 
         if (role.equals("admin")) layout = R.layout.fragment_dashboard_admin;
@@ -67,25 +71,30 @@ public class DashboardFragment extends Fragment {
                             for (QueryDocumentSnapshot snapshot : t.getResult()) {
                                 kostId = snapshot.getString("kostId");
                             }
-                            kost = kostData.findByKostId(kostId);
-                            try {
-                                namaKost.setText(kost.getNamaKost());
-                                waktuBukaKost.setText(kost.getWaktuBukaKost());
-                                tipeKost.setText(kost.getTipeKost());
+                            db.collection("kosts").whereEqualTo("kostId", kostId).addSnapshotListener((value, error) -> {
+                               if (value != null) {
+                                   for (QueryDocumentSnapshot snapshot : value) {
+                                       kost = snapshot.toObject(Kost.class);
+                                   }
+                                   if (kost != null) {
+                                       menu.setVisibility(View.VISIBLE);
+                                       userKostInf.setVisibility(View.VISIBLE);
+                                       userNotOrdered.setVisibility(View.GONE);
 
-                                menu.setVisibility(View.VISIBLE);
-                                userKostInf.setVisibility(View.VISIBLE);
-                                userNotOrdered.setVisibility(View.GONE);
-                            } catch (NullPointerException e) {
-                                namaKost.setText("");
-                                waktuBukaKost.setText("");
-                                tipeKost.setText("");
+                                       namaKost.setText(kost.getNamaKost());
+                                       waktuBukaKost.setText(kost.getWaktuBukaKost());
+                                       tipeKost.setText(kost.getTipeKost());
+                                   } else {
+                                       namaKost.setText("");
+                                       waktuBukaKost.setText("");
+                                       tipeKost.setText("");
 
-                                menu.setVisibility(View.GONE);
-                                userKostInf.setVisibility(View.GONE);
-                                userNotOrdered.setVisibility(View.VISIBLE);
-                                Snackbar.make(v, "Silahkan pesan kamar dulu", Snackbar.LENGTH_SHORT).show();
-                            }
+                                       menu.setVisibility(View.GONE);
+                                       userKostInf.setVisibility(View.GONE);
+                                       userNotOrdered.setVisibility(View.VISIBLE);
+                                   }
+                               }
+                            });
                         }
                     });
         } else {
@@ -95,7 +104,7 @@ public class DashboardFragment extends Fragment {
         }
 
         greetUser = v.findViewById(R.id.tvGreetUser);
-        greetUser.setText(username);
+        greetUser.setText("Hi " + username);
 
         return v;
     }

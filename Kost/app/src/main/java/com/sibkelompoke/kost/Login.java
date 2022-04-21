@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.sibkelompoke.kost.database.UserData;
+import com.sibkelompoke.kost.service.UserData;
 import com.sibkelompoke.kost.model.User;
 
 import java.util.ArrayList;
@@ -73,6 +73,7 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "logged in", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("user", user);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();

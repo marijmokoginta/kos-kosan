@@ -17,7 +17,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,8 +31,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.sibkelompoke.kost.database.KostData;
-import com.sibkelompoke.kost.database.UserData;
+import com.sibkelompoke.kost.service.KostData;
+import com.sibkelompoke.kost.service.UserData;
 import com.sibkelompoke.kost.model.Alamat;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.User;
@@ -109,19 +108,14 @@ public class AddKost extends AppCompatActivity {
                 kost = new Kost(userId + new Date().getTime());
 
                 StorageReference imageFolder = FirebaseStorage.getInstance().getReference().child("kost image");
-                for (int i = 0; i < kostPhotosUri.size(); i++) {
-                    Log.i(TAG, kostPhotosUri.get(i).toString());
-                    Uri imgUri = kostPhotosUri.get(i);
-                    final StorageReference imageName = imageFolder.child("IMG" + new Date().getTime() + ".jpg");
+                Uri imgUri = kostPhotosUri.get(0);
+                final StorageReference imageName = imageFolder.child("IMG" + new Date().getTime() + ".jpg");
 
-                    imageName.putFile(imgUri).addOnSuccessListener(taskSnapshot ->
-                            imageName.getDownloadUrl().addOnSuccessListener(uri -> {
-                                kost.getImageUrl().add(uri.toString());
-                                saveData(kost, userId, v, uri.toString());
-                            }));
-                }
-
-                finish();
+                imageName.putFile(imgUri).addOnSuccessListener(taskSnapshot ->
+                        imageName.getDownloadUrl().addOnSuccessListener(uri -> {
+                            kost.getImageUrl().add(uri.toString());
+                            saveData(kost, userId, v, uri.toString());
+                        }));
             }
 
         });
@@ -215,7 +209,11 @@ public class AddKost extends AppCompatActivity {
                     userData.edit(userId, user);
                 }
             }
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("user", new User());
+            startActivity(intent);
+            finish();
         } else {
             getSnackBar(v, "Terjadi Kesalahan");
         }

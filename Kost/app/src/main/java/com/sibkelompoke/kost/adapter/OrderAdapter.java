@@ -1,5 +1,7 @@
 package com.sibkelompoke.kost.adapter;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +58,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         ImageView userImage;
         TextView username, namaLengkap, pekerjaan, catatan;
         LinearLayout userDetailOrder;
-        ImageButton closeDetail;
+        ImageButton closeDetail, showDetail;
 
         public OrderViewHolder (View v) {
             super(v);
@@ -68,13 +70,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             catatan = v.findViewById(R.id.userOrderCatatan);
             userDetailOrder = v.findViewById(R.id.userOrderDetail);
             closeDetail = v.findViewById(R.id.closeUserDetail);
+            showDetail = v.findViewById(R.id.showDetail);
 
             v.setOnClickListener(view -> {
                 userDetailOrder.setVisibility(View.VISIBLE);
+                showDetail.setVisibility(GONE);
             });
 
             closeDetail.setOnClickListener(view -> {
-                userDetailOrder.setVisibility(View.GONE);
+                userDetailOrder.setVisibility(GONE);
             });
         }
     }

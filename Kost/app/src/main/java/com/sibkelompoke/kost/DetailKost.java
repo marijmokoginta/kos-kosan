@@ -121,7 +121,7 @@ public class DetailKost extends AppCompatActivity {
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     String kostId, userId;
-                                    boolean notAlreadyOrder = true;
+                                    boolean notOrdered = true;
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         kostId = documentSnapshot.getString("kostId");
                                         userId = documentSnapshot.getString("userId");
@@ -136,12 +136,12 @@ public class DetailKost extends AppCompatActivity {
                                             Log.i(TAG, "userID from db : " + userId);
                                             Log.i(TAG, "userId from user Input : " + kost.getUserId());
                                             Snackbar.make(v, "Anda telah memesan kost ini", Snackbar.LENGTH_SHORT).show();
-                                            notAlreadyOrder = false;
+                                            notOrdered = false;
                                         }
                                     }
 
                                     // menyimpan order kost dari user
-                                    if (notAlreadyOrder) {
+                                    if (notOrdered) {
                                         db.collection("orderedKost").add(orderedKost)
                                                 .addOnCompleteListener(task1 -> {
                                                     if (task1.isSuccessful()) {
