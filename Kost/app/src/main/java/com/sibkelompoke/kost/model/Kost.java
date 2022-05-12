@@ -17,6 +17,7 @@ public class Kost implements Parcelable {
     private String catatanKost;
     private String kostId;
     private String userId;
+    private FasilitasKamar fasilitasKamar;
 
     public Kost (){}
 
@@ -136,6 +137,14 @@ public class Kost implements Parcelable {
 
     public void setCatatanKost(String catatanKost) {
         this.catatanKost = catatanKost;
+    }
+
+    public FasilitasKamar getFasilitasKamar() {
+        return fasilitasKamar;
+    }
+
+    public void setFasilitasKamar(FasilitasKamar fasilitasKamar) {
+        this.fasilitasKamar = fasilitasKamar;
     }
 
     @Override

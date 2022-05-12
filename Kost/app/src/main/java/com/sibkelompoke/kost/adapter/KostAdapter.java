@@ -1,6 +1,6 @@
 package com.sibkelompoke.kost.adapter;
 
-import static com.sibkelompoke.kost.constant.KostKonstan.DEFAULT_IMG_URL;
+import static com.sibkelompoke.kost.util.KostKonstan.DEFAULT_IMG_URL;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -47,6 +47,7 @@ public class KostAdapter extends RecyclerView.Adapter<KostAdapter.KostViewHolder
         holder.waktuBukaKost.setText("waktu buka kost : " + kosts.get(position).getWaktuBukaKost() + " Wita");
         holder.tipeKost.setText(kosts.get(position).getTipeKost());
         holder.hargaKamar.setText("Rp." + kosts.get(position).getHarga() + " /Bulan");
+        holder.alamatKost.setText(kosts.get(position).getAlamat().getJalan() + ", " + kosts.get(position).getAlamat().getKelurahan());
 
         if (kosts.get(position).getImageUrl().size() > 0) {
             Glide.with(context).load(kosts.get(position).getImageUrl().get(0)).into(holder.kostImage);
@@ -70,7 +71,7 @@ public class KostAdapter extends RecyclerView.Adapter<KostAdapter.KostViewHolder
     }
 
     public class KostViewHolder extends RecyclerView.ViewHolder {
-        TextView namaKost, waktuBukaKost, tipeKost, hargaKamar;
+        TextView namaKost, waktuBukaKost, tipeKost, hargaKamar, alamatKost;
         ImageView kostImage;
 
         public KostViewHolder(@NonNull View itemView) {
@@ -81,6 +82,7 @@ public class KostAdapter extends RecyclerView.Adapter<KostAdapter.KostViewHolder
             tipeKost = itemView.findViewById(R.id.tvTipeKost);
             kostImage = itemView.findViewById(R.id.kostImage);
             hargaKamar = itemView.findViewById(R.id.hargaKamar);
+            alamatKost = itemView.findViewById(R.id.alamatKost);
 
             itemView.setOnClickListener(view -> {
                 if (onClickListener != null) {

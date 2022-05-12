@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".AddKost">
+    tools:context=".activity.AddKost">
 
     <LinearLayout
         android:id="@+id/actionBar"
@@ -52,13 +52,14 @@
                 <ImageView
                     android:id="@+id/defaultPhoto"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:src="@drawable/ic_house"/>
 
                 <ImageSwitcher
                     android:id="@+id/kostPhotos"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="200dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -576,6 +577,29 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/txtFasilitasKamar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/fasilitas_kamar"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="16sp"
+                android:textColor="@color/text_color"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@+id/jumlahKamarWrap"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fasilitasKamar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@+id/txtFasilitasKamar"/>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -584,7 +608,7 @@
                 android:layout_marginTop="54dp"
                 android:layout_marginBottom="32dp"
                 app:cardCornerRadius="8sp"
-                app:layout_constraintTop_toBottomOf="@+id/jumlahKamarWrap"
+                app:layout_constraintTop_toBottomOf="@+id/fasilitasKamar"
                 app:layout_constraintBottom_toBottomOf="parent">
 
                 <Button
@@ -598,8 +622,6 @@
                     android:background="@color/colorPrimary" />
 
             </androidx.cardview.widget.CardView>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

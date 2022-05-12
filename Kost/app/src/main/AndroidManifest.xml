@@ -12,22 +12,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kost">
         <activity
-            android:name=".MainActivity"
+            android:name=".user_dashboard.Pembayaran"
             android:exported="false" />
         <activity
-            android:name=".TermAndConditions"
+            android:name=".admin_dashboard.PelangganDetail"
             android:exported="false" />
         <activity
-            android:name=".AddKost"
+            android:name=".activity.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".admin_dashboard.AdminOrder"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".admin_dashboard.AdminPromosi"
             android:exported="false" />
         <activity
-            android:name=".DetailKost"
+            android:name=".activity.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.TermAndConditions"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddKost"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Register"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Login"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailKost"
+            android:exported="false" />
+        <activity
+            android:name=".admin_dashboard.AdminKost"
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
@@ -43,7 +61,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <service android:name=".service.KostData" />
+
+        <service android:name=".service.KostService" />
+        <service android:name=".service.OrderService" />
     </application>
 
 </manifest>

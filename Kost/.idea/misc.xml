@@ -3,28 +3,50 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.115" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_gray_stroke_radius.xml" value="0.115" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_stroke.xml" value="0.189" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_stroke_black.xml" value="0.115" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_task_item.xml" value="0.115" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/content_bg.xml" value="0.143" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1545" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_catatan.xml" value="0.143" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_chat.xml" value="0.143" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_check.xml" value="0.143" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_circle_chevron_down.xml" value="0.143" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_circle_chevron_up.xml" value="0.189" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_comment_dots.xml" value="0.115" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_info.xml" value="0.143" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_location.xml" value="0.1545" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/ic_money.xml" value="0.143" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/search_bg.xml" value="0.1545" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_add_kost.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_admin_kost.xml" value="0.19610507246376813" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_admin_list_kost.xml" value="0.19610507246376813" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_admin_order.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_admin_promosi.xml" value="0.25" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_detail_kost.xml" value="0.22447916666666667" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_login.xml" value="0.22447916666666667" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_pelanggan_detail.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_pembayaran.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_register.xml" value="0.19610507246376813" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_result.xml" value="0.19610507246376813" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_spash_screen.xml" value="0.19610507246376813" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/daftar_pelanggan.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/daftar_tagihan.xml" value="0.25" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/dashboard_item.xml" value="0.19610507246376813" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fasilitas_kamar.xml" value="0.25" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_account.xml" value="0.25" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_account_loggedin.xml" value="0.19610507246376813" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_dashboard_admin.xml" value="0.25" />
-        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_home.xml" value="0.22447916666666667" />
-        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/list_order.xml" value="0.33" />
-        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/view_layout.xml" value="0.22447916666666667" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_pelanggan.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/fragment_pengaturan.xml" value="0.19610507246376813" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/list_order.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/view_layout.xml" value="0.25" />
+        <entry key="..\:/Dev/Android/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/layout/view_layout_area.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/marij_mokoginta/Documents/Sistem Informasi/semester 4/MK Pemrograman Aplikasi Mobile/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_error.xml" value="0.1565" />
         <entry key="..\:/Users/marij_mokoginta/Documents/Sistem Informasi/semester 4/MK Pemrograman Aplikasi Mobile/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_oval.xml" value="0.117" />
         <entry key="..\:/Users/marij_mokoginta/Documents/Sistem Informasi/semester 4/MK Pemrograman Aplikasi Mobile/Aplikasi Pemesanan Kos-kosan Area Gorontalo/Kost/app/src/main/res/drawable/bg_stroke.xml" value="0.117" />

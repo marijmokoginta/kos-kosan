@@ -1,4 +1,4 @@
-package com.sibkelompoke.kost.fragment;
+package com.sibkelompoke.kost.main_menu;
 
 import static android.content.ContentValues.TAG;
 
@@ -15,31 +15,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.sibkelompoke.kost.AddKost;
-import com.sibkelompoke.kost.Login;
-import com.sibkelompoke.kost.MainActivity;
+import com.bumptech.glide.Glide;
+import com.sibkelompoke.kost.activity.AddKost;
+import com.sibkelompoke.kost.activity.Login;
+import com.sibkelompoke.kost.activity.MainActivity;
 import com.sibkelompoke.kost.R;
-import com.sibkelompoke.kost.Register;
-import com.sibkelompoke.kost.TermAndConditions;
-import com.sibkelompoke.kost.service.KostData;
+import com.sibkelompoke.kost.activity.Register;
+import com.sibkelompoke.kost.activity.TermAndConditions;
+import com.sibkelompoke.kost.service.KostService;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.User;
 
 import java.util.ArrayList;
 
 public class AccountFragment extends Fragment {
-    Button btnLogin, btnRegister;
-    Button btnLogout, btnAddKost, btnEditAccount;
-    TextView tvUsername;
+    private Button btnLogin, btnRegister;
+    private Button btnLogout, btnAddKost, btnEditAccount;
+    private TextView tvUsername;
+    private ImageView profilePic;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        KostData kostData = new KostData();
-        ArrayList<Kost> kosts = kostData.findAll();
+        KostService kostService = new KostService();
+        ArrayList<Kost> kosts = kostService.findAll();
         // get saved user
         SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = mSettings.edit();
@@ -47,13 +49,12 @@ public class AccountFragment extends Fragment {
 
         // get role from current user
         assert getArguments() != null;
-        String role = getArguments().getString("role");
-        String username = getArguments().getString("username");
+        User user = getArguments().getParcelable("user");
 
         int layout = R.layout.fragment_account;
 
         boolean isLoggedin = false;
-        if (!userId.equals("missing") || !role.equals("guest")) {
+        if (!userId.equals("missing") || !user.getRole().equals("guest")) {
             layout = R.layout.fragment_account_loggedin;
             isLoggedin = true;
         }
@@ -70,23 +71,22 @@ public class AccountFragment extends Fragment {
             btnAddKost = view.findViewById(R.id.addKost);
             btnEditAccount = view.findViewById(R.id.editAccount);
             tvUsername = view.findViewById(R.id.accUsername);
+            profilePic = view.findViewById(R.id.profilePic);
 
-            tvUsername.setText(username);
+            tvUsername.setText(user.getUsername());
+            Glide.with(requireContext()).load(user.getImageUrl()).into(profilePic);
 
             btnAddKost.setOnClickListener(v -> {
                 Intent intent;
                 boolean firstTime = true;
-                try {
-                    for (Kost kost : kostData.findAll()) {
-                        if (kost.getKostId().equals(userId)) {
-                            intent = new Intent(getContext(), AddKost.class);
-                            intent.putExtra("userId", userId);
-                            startActivity(intent);
-                            firstTime = false;
-                        }
+
+                for (Kost kost : kosts) {
+                    if (kost.getKostId().equals(userId)) {
+                        intent = new Intent(getContext(), AddKost.class);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+                        firstTime = false;
                     }
-                } catch (NullPointerException e) {
-                    Snackbar.make(v, "Terjadi Kesalahan", Snackbar.LENGTH_SHORT).show();
                 }
 
                 if (firstTime) {

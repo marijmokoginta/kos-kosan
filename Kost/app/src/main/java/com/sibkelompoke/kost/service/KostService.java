@@ -15,16 +15,16 @@ import com.sibkelompoke.kost.model.Kost;
 
 import java.util.ArrayList;
 
-public class KostData extends Service {
-    private final String TAG = "KostData";
+public class KostService extends Service {
+    private final String TAG = "KostService";
 
-    private IBinder mBinder = new LocalBinder();
+    private final IBinder mBinder = new KostBinder();
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private Kost kost;
 
-    public KostData() {
+    public KostService() {
         kost = new Kost();
     }
 
@@ -112,9 +112,9 @@ public class KostData extends Service {
         return kosts;
     }
 
-    public class LocalBinder extends Binder {
-        public KostData getInstance () {
-            return KostData.this;
+    public class KostBinder extends Binder {
+        public KostService getInstance () {
+            return KostService.this;
         }
     }
 }

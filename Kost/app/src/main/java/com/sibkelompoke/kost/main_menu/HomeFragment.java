@@ -1,20 +1,17 @@
-package com.sibkelompoke.kost.fragment;
+package com.sibkelompoke.kost.main_menu;
 
-import static com.sibkelompoke.kost.constant.KostKonstan.GUEST;
-import static com.sibkelompoke.kost.constant.KostKonstan.KABUPATEN_GORONTALO;
-import static com.sibkelompoke.kost.constant.KostKonstan.KAMPUS_1_UNG;
-import static com.sibkelompoke.kost.constant.KostKonstan.KAMPUS_4_UNG;
-import static com.sibkelompoke.kost.constant.KostKonstan.KOTA_GORONTALO;
-import static com.sibkelompoke.kost.constant.KostKonstan.LIMBOTO;
-import static com.sibkelompoke.kost.constant.KostKonstan.MISSING;
-import static com.sibkelompoke.kost.constant.KostKonstan.SUWAWA;
+import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_GORONTALO;
+import static com.sibkelompoke.kost.util.KostKonstan.KAMPUS_1_UNG;
+import static com.sibkelompoke.kost.util.KostKonstan.KAMPUS_4_UNG;
+import static com.sibkelompoke.kost.util.KostKonstan.KOTA_GORONTALO;
+import static com.sibkelompoke.kost.util.KostKonstan.LIMBOTO;
+import static com.sibkelompoke.kost.util.KostKonstan.SUWAWA;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +28,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.sibkelompoke.kost.DetailKost;
+import com.sibkelompoke.kost.activity.DetailKost;
 import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.activity.ResultActivity;
 import com.sibkelompoke.kost.adapter.KostAdapter;
 import com.sibkelompoke.kost.adapter.KostAreaAdapter;
-import com.sibkelompoke.kost.service.KostData;
+import com.sibkelompoke.kost.model.User;
+import com.sibkelompoke.kost.service.KostService;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.KostArea;
 
@@ -47,10 +43,10 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
 
-    private KostData kostData;
+    private KostService kostService;
     private boolean bounded;
 
-    private String userId, role;
+    private User user;
 
     // UI komponent
     private RecyclerView kostMainArea, kostArea1, kostArea2, viewArea;
@@ -65,11 +61,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
-        userId = mSettings.getString("userId", MISSING);
-        role = mSettings.getString("userRole", GUEST);
+        user = getArguments().getParcelable("user");
 
-        kostData = new KostData();
+        kostService = new KostService();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -80,6 +74,7 @@ public class HomeFragment extends Fragment {
         ArrayList<Kost> kostsFiltered3 = new ArrayList<>();
 
         initUiView(view);
+        eventListener();
 
         getDataAreas();
         KostAreaAdapter kostAreaAdapter = new KostAreaAdapter(getContext(), areas);
@@ -95,20 +90,20 @@ public class HomeFragment extends Fragment {
         kostMainArea.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         kostMainArea.setAdapter(kostAdapter);
         adapterClickListener(kostAdapter);
-        kostData.findAll(kostAdapter, kosts);
+        kostService.findAll(kostAdapter, kosts);
         titleKostArea1.setText("Kost-kostan terbaru :");
 
         // layout filter 1
         kostArea1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         kostArea1.setAdapter(kostsFiltered1Adapter);
-        kostData.getKostFilterByKabupaten(KOTA_GORONTALO, kostsFiltered1, kostsFiltered1Adapter);
+        kostService.getKostFilterByKabupaten(KOTA_GORONTALO, kostsFiltered1, kostsFiltered1Adapter);
         adapterClickListener(kostsFiltered1Adapter);
         titleKostArea2.setText("Kost Area Kota Gorontalo :");
 
         // layout filter 2
         kostArea2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         kostArea2.setAdapter(kostFiltered2Adapter);
-        kostData.getKostFilterByKabupaten(KABUPATEN_GORONTALO, kostsFiltered2, kostFiltered2Adapter);
+        kostService.getKostFilterByKabupaten(KABUPATEN_GORONTALO, kostsFiltered2, kostFiltered2Adapter);
         adapterClickListener(kostFiltered2Adapter);
         titleKostArea3.setText("Kost Area Limboto :");
 
@@ -129,7 +124,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        Intent intent = new Intent(getContext(), KostData.class);
+        Intent intent = new Intent(getContext(), KostService.class);
         requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
@@ -137,14 +132,14 @@ public class HomeFragment extends Fragment {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             bounded = true;
-            KostData.LocalBinder binder = (KostData.LocalBinder) iBinder;
-            kostData = binder.getInstance();
+            KostService.KostBinder binder = (KostService.KostBinder) iBinder;
+            kostService = binder.getInstance();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             bounded = false;
-            kostData = null;
+            kostService = null;
             Toast.makeText(getContext(), "gagal memuat", Toast.LENGTH_SHORT).show();
         }
     };
@@ -171,9 +166,8 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), DetailKost.class);
             intent.putExtra("kost", kost);
             intent.putExtra("alamat", alamat);
-            intent.putExtra("userId", userId);
-            intent.putExtra("role", role);
-            Log.i(TAG, "home : " + role);
+            intent.putExtra("user", user);
+            intent.putExtra("fasilitas", kost.getFasilitasKamar());
             startActivity(intent);
         });
     }
@@ -192,5 +186,11 @@ public class HomeFragment extends Fragment {
 
         search = v.findViewById(R.id.tvSearch);
         btnNotofication = v.findViewById(R.id.btnNotification);
+    }
+
+    private void eventListener() {
+        search.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(),ResultActivity.class));
+        });
     }
 }

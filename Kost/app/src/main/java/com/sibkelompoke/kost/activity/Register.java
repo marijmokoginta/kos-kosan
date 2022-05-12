@@ -1,4 +1,4 @@
-package com.sibkelompoke.kost;
+package com.sibkelompoke.kost.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,12 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.sibkelompoke.kost.service.UserData;
+import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.activity.Login;
+import com.sibkelompoke.kost.service.UserService;
 import com.sibkelompoke.kost.model.User;
 
 public class Register extends AppCompatActivity {
 
-    UserData userData;
+    UserService userService;
 
     EditText etUsername, etPassword, etTelepon;
     Button btnReegister;
@@ -22,7 +24,7 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        userData = new UserData();
+        userService = new UserService();
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -34,7 +36,7 @@ public class Register extends AppCompatActivity {
             user.setNoTelepon(etTelepon.getText().toString());
             user.setRole("user");
 
-            if (userData.save(user)) {
+            if (userService.save(user)) {
                 startActivity(new Intent(getApplicationContext(), Login.class));
                 finish();
             } else {

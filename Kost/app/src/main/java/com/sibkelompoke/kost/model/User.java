@@ -1,7 +1,7 @@
 package com.sibkelompoke.kost.model;
 
-import static com.sibkelompoke.kost.constant.KostKonstan.GUEST;
-import static com.sibkelompoke.kost.constant.KostKonstan.MISSING;
+import static com.sibkelompoke.kost.util.KostKonstan.GUEST;
+import static com.sibkelompoke.kost.util.KostKonstan.MISSING;
 
 import android.os.Parcel;
 import android.os.Parcelable;

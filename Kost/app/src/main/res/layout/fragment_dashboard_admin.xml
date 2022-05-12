@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.DashboardFragment">
+    tools:context=".main_menu.DashboardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/actBar"
@@ -35,6 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp">
             <ImageView
+                android:id="@+id/profilePic"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:background="@drawable/bg_error"
@@ -45,6 +46,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:overScrollMode="never"
         android:layout_marginTop="?attr/actionBarSize">
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,6 +70,13 @@
                 android:text="@string/admin_tagline"
                 android:fontFamily="@font/poppins"
                 android:textColor="@color/colorPrimary"/>
+
+            <ImageView
+                android:id="@+id/imageAdminDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/people"/>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +84,7 @@
                 app:cardCornerRadius="12dp"
                 android:elevation="16dp">
                 <LinearLayout
+                    android:id="@+id/adminMenuListKost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -102,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
                             android:textColor="@color/white"
-                            android:text="Lihat daftar kost anda"/>
+                            android:text="Lihat kost anda"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -113,6 +124,47 @@
                 app:cardCornerRadius="12dp"
                 android:elevation="16dp">
                 <LinearLayout
+                    android:id="@+id/adminMenuOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:gravity="center_vertical"
+                    android:background="@color/pink">
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_money"
+                        android:scaleType="centerInside"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="textStart"
+                            android:text="@string/order"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:textColor="@color/white"
+                            android:text="@string/order_sub"/>
+                    </LinearLayout>
+                    </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                android:elevation="16dp">
+                <LinearLayout
+                    android:id="@+id/adminMenuPromosi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -143,36 +195,8 @@
                             android:textColor="@color/white"
                             android:text="@string/promosi_sub"/>
                     </LinearLayout>
-                    </LinearLayout>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <ImageView
-                android:id="@+id/imageAdminDashboard"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/people"/>
-
-            <LinearLayout
-                android:id="@+id/listOrder"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Order :"
-                    android:textColor="@color/colorPrimary"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textSize="18sp"
-                    android:layout_margin="16dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/orderList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

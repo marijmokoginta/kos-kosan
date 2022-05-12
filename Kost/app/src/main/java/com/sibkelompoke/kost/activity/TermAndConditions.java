@@ -1,10 +1,13 @@
-package com.sibkelompoke.kost;
+package com.sibkelompoke.kost.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.activity.AddKost;
 
 public class TermAndConditions extends AppCompatActivity {
 

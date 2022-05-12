@@ -14,13 +14,13 @@ import com.sibkelompoke.kost.model.User;
 
 import java.util.ArrayList;
 
-public class UserData {
+public class UserService {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private final ArrayList<User> users;
     private User user;
 
-    public UserData () {
+    public UserService() {
         users = new ArrayList<>();
     }
 
@@ -70,11 +70,8 @@ public class UserData {
                     users.clear();
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            User user = new User(document.getString("username"),
-                                    document.getString("password"));
+                            User user = document.toObject(User.class);
                             user.setId(document.getId());
-                            user.setRole(document.getString("role"));
-                            user.setNoTelepon(document.getString("noTelepon"));
                             users.add(user);
                         }
                     }

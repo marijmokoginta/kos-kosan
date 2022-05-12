@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/colorBg"
-    tools:context="fragment.AccountFragment">
+    tools:context="main_menu.AccountFragment">
 
     <LinearLayout
         android:id="@+id/header"
@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="100dp">
             <ImageView
+                android:id="@+id/profilePic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/user"/>

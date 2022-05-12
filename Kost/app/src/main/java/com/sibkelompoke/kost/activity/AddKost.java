@@ -1,17 +1,25 @@
-package com.sibkelompoke.kost;
+package com.sibkelompoke.kost.activity;
 
-import static com.sibkelompoke.kost.constant.KostKonstan.KABUPATEN_BOALEMO;
-import static com.sibkelompoke.kost.constant.KostKonstan.KABUPATEN_BONEBOLANGO;
-import static com.sibkelompoke.kost.constant.KostKonstan.KABUPATEN_GORONTALO;
-import static com.sibkelompoke.kost.constant.KostKonstan.KABUPATEN_GORONTALO_UTARA;
-import static com.sibkelompoke.kost.constant.KostKonstan.KABUPATEN_POHUWATO;
-import static com.sibkelompoke.kost.constant.KostKonstan.KOST_CAMPUR;
-import static com.sibkelompoke.kost.constant.KostKonstan.KOST_PEREMPUAN;
-import static com.sibkelompoke.kost.constant.KostKonstan.KOST_PRIA;
-import static com.sibkelompoke.kost.constant.KostKonstan.KOTA_GORONTALO;
+import static com.sibkelompoke.kost.util.KostKonstan.ALAT_MASAK;
+import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_BOALEMO;
+import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_BONEBOLANGO;
+import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_GORONTALO;
+import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_GORONTALO_UTARA;
+import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_POHUWATO;
+import static com.sibkelompoke.kost.util.KostKonstan.KAMAR_MANDI_DALAM;
+import static com.sibkelompoke.kost.util.KostKonstan.KASUR;
+import static com.sibkelompoke.kost.util.KostKonstan.KLOSET_DUDUK;
+import static com.sibkelompoke.kost.util.KostKonstan.KOST_CAMPUR;
+import static com.sibkelompoke.kost.util.KostKonstan.KOST_WANITA;
+import static com.sibkelompoke.kost.util.KostKonstan.KOST_PRIA;
+import static com.sibkelompoke.kost.util.KostKonstan.KOTA_GORONTALO;
+import static com.sibkelompoke.kost.util.KostKonstan.LEMARI;
+import static com.sibkelompoke.kost.util.KostKonstan.TELEVISI;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,8 +39,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.sibkelompoke.kost.service.KostData;
-import com.sibkelompoke.kost.service.UserData;
+import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.adapter.FasilitasAdapter;
+import com.sibkelompoke.kost.model.FasilitasKamar;
+import com.sibkelompoke.kost.service.KostService;
+import com.sibkelompoke.kost.service.UserService;
 import com.sibkelompoke.kost.model.Alamat;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.User;
@@ -43,11 +54,12 @@ import java.util.Date;
 public class AddKost extends AppCompatActivity {
     private final String TAG = "AddKost";
 
-    private KostData kostData;
-    private UserData userData;
+    private KostService kostService;
+    private UserService userService;
 
-    ArrayList<Kost> kosts;
-    ArrayList<User> users;
+    private ArrayList<Kost> kosts;
+    private ArrayList<User> users;
+    private ArrayList<FasilitasKamar> fasilitas;
 
     private EditText namaKost, waktuBukaKost, waktuTutupKost;
     private EditText etJalan, etNo, etKelurahan, etKecamatan;
@@ -55,6 +67,7 @@ public class AddKost extends AppCompatActivity {
     private Spinner tipeKost, kabupaten;
     private TextView tandaiPeta;
     private Button btnBuatKost, btnAddPhoto;
+    private RecyclerView fasilitasKamar;
 
     private FloatingActionButton prevBtn, nextBtn;
 
@@ -68,7 +81,7 @@ public class AddKost extends AppCompatActivity {
 
     private Kost kost;
 
-    private final String[] tpKost = {KOST_PRIA, KOST_PEREMPUAN, KOST_CAMPUR};
+    private final String[] tpKost = {KOST_PRIA, KOST_WANITA, KOST_CAMPUR};
     private final String[] listKabupaten = {KOTA_GORONTALO,KABUPATEN_BONEBOLANGO,
             KABUPATEN_GORONTALO, KABUPATEN_GORONTALO_UTARA,
             KABUPATEN_BOALEMO, KABUPATEN_POHUWATO};
@@ -78,24 +91,27 @@ public class AddKost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_kost);
 
-        kostData = new KostData();
-        userData = new UserData();
+        kostService = new KostService();
+        userService = new UserService();
 
         kostPhotosUri = new ArrayList<>();
 
         initView();
-        defaultImage.setMinimumHeight(200);
-
         ArrayAdapter<String> tipeKostAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_list_item, tpKost);
         tipeKost.setAdapter(tipeKostAdapter);
 
         ArrayAdapter<String> kabupatenAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_list_item, listKabupaten);
         kabupaten.setAdapter(kabupatenAdapter);
 
+        fasilitasKamar();
+        FasilitasAdapter fasilitasAdapter = new FasilitasAdapter(getApplicationContext(), fasilitas);
+        fasilitasKamar.setAdapter(fasilitasAdapter);
+        fasilitasKamar.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3, RecyclerView.VERTICAL, false));
+
         kostPhotos.setFactory(() -> new ImageView(getApplicationContext()));
 
-        kosts = kostData.findAll();
-        users = userData.findAll();
+        kosts = kostService.findAll();
+        users = userService.findAll();
         setListener();
     }
 
@@ -146,9 +162,8 @@ public class AddKost extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                defaultImage.setImageResource(0);
-                defaultImage.setMinimumHeight(0);
-                defaultImage.setMaxHeight(0);
+                defaultImage.setVisibility(View.GONE);
+                kostPhotos.setVisibility(View.VISIBLE);
                 if (data.getClipData() != null) {
                     // picked multiple photo
                     int count = data.getClipData().getItemCount();
@@ -202,11 +217,11 @@ public class AddKost extends AppCompatActivity {
             kost.setCatatanKost(etCatatanKost.getText().toString());
         }
 
-        if (!kostData.addOne(kost)) {
+        if (!kostService.addOne(kost)) {
             for (User user : users) {
                 if (user.getId().equals(userId)) {
                     user.setRole("admin");
-                    userData.edit(userId, user);
+                    userService.edit(userId, user);
                 }
             }
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -235,6 +250,7 @@ public class AddKost extends AppCompatActivity {
         etCatatanKost = findViewById(R.id.etCatatanKost);
         etJumlahKamar = findViewById(R.id.etJumlahKamar);
         btnBuatKost = findViewById(R.id.btnBuatKost);
+        fasilitasKamar = findViewById(R.id.fasilitasKamar);
 
         prevBtn = findViewById(R.id.prevBtn);
         nextBtn = findViewById(R.id.nextBtn);
@@ -242,6 +258,16 @@ public class AddKost extends AppCompatActivity {
         btnAddPhoto = findViewById(R.id.btnAddPhotos);
         kostPhotos = findViewById(R.id.kostPhotos);
         defaultImage = findViewById(R.id.defaultPhoto);
+    }
+
+    private void fasilitasKamar() {
+        fasilitas = new ArrayList<>();
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, KAMAR_MANDI_DALAM));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, KLOSET_DUDUK));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, TELEVISI));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, LEMARI));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, ALAT_MASAK));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, KASUR));
     }
 
     private void getSnackBar(View v, String message) {

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/colorBg"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.HomeFragment">
+    tools:context=".main_menu.HomeFragment">
 
     <!-- scroll content wrap-->
     <ScrollView
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
+        android:overScrollMode="never"
         app:layout_constraintTop_toBottomOf="@+id/appBar"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -32,19 +33,20 @@
                 android:background="@drawable/header_bg"
                 android:padding="4dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/appHomeTittle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Cari Kost-kost an area \nGorontalo"
-                    android:textSize="24sp"
-                    android:textColor="@color/white"
+                    android:layout_marginStart="16dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:layout_marginStart="16dp"/>
+                    android:text="@string/headline"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="develop by marij mokoginta"
+                    android:text="@string/sub_headline"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_marginStart="16dp"
@@ -64,7 +66,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/viewArea"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"/>
             </androidx.cardview.widget.CardView>
 
             <!-- banner app promotion -->
@@ -75,13 +78,12 @@
                 android:elevation="4dp"
                 app:cardUseCompatPadding="true"
                 app:cardCornerRadius="8dp">
-
                 <ImageView
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:src="@drawable/ic_house"/>
-
+                    android:src="@drawable/ic_house"
+                    android:background="@color/white"/>
             </androidx.cardview.widget.CardView>
 
             <!-- kost filter area 1 -->
@@ -123,7 +125,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/kostArea1"
-                    android:padding="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -177,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="32dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 
@@ -215,27 +216,52 @@
 
         <TextView
             android:id="@+id/tvSearch"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
             android:background="@drawable/search_bg"
             android:textColor="@color/text_color"
-            android:padding="6dp"
+            android:padding="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:fontFamily="@font/poppins"
             android:text="cari kost"/>
 
-        <ImageButton
-            android:id="@+id/btnNotification"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_notifications"
-            android:scaleType="centerInside"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorPrimary"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="5">
+            <ImageButton
+                android:id="@+id/btnNotification"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_notifications"
+                android:scaleType="centerInside"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="12dp"
+                android:background="@color/colorPrimary"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/countNotification"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="-20dp"
+                android:layout_marginTop="-12dp"
+                app:cardCornerRadius="12dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins"
+                    android:background="@color/red"
+                    android:textSize="10sp"
+                    android:text="1"/>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
     </LinearLayout>
 

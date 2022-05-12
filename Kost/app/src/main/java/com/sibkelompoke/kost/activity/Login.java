@@ -1,4 +1,4 @@
-package com.sibkelompoke.kost;
+package com.sibkelompoke.kost.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.sibkelompoke.kost.service.UserData;
+import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.service.UserService;
 import com.sibkelompoke.kost.model.User;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class Login extends AppCompatActivity {
     private final String TAG = "Login";
 
-    private UserData userData;
+    private UserService userService;
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
@@ -35,9 +36,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userData = new UserData();
+        userService = new UserService();
 
-        ArrayList<User> users = userData.findAll();
+        ArrayList<User> users = userService.findAll();
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -76,6 +77,7 @@ public class Login extends AppCompatActivity {
                         intent.putExtra("user", user);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
+
                         finish();
                     }
                 }

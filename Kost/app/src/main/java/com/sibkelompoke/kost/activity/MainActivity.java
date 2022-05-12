@@ -1,4 +1,4 @@
-package com.sibkelompoke.kost;
+package com.sibkelompoke.kost.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,9 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-import com.sibkelompoke.kost.fragment.AccountFragment;
-import com.sibkelompoke.kost.fragment.DashboardFragment;
-import com.sibkelompoke.kost.fragment.HomeFragment;
+import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.main_menu.AccountFragment;
+import com.sibkelompoke.kost.main_menu.DashboardFragment;
+import com.sibkelompoke.kost.main_menu.HomeFragment;
 import com.sibkelompoke.kost.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         HomeFragment homeFragment = new HomeFragment();
         Bundle bdl = new Bundle();
-        bdl.putString("userId", user.getId());
-        bdl.putString("role", user.getRole());
+        bdl.putParcelable("user", user);
         homeFragment.setArguments(bdl);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, homeFragment).commit();
 
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     data.putString("role", user.getRole());
                     data.putString("userId", user.getId());
                     data.putString("username", user.getUsername());
+                    data.putParcelable("user", user);
                     fragment.setArguments(data);
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
