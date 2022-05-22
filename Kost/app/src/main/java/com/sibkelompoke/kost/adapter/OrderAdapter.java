@@ -2,6 +2,7 @@ package com.sibkelompoke.kost.adapter;
 
 import static android.view.View.GONE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,13 +41,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         return new OrderViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         if (orderKosts.size() > 0) {
             holder.username.setText(orderKosts.get(position).getUser().getUsername());
-            holder.namaLengkap.setText(orderKosts.get(position).getUser().getNamaLengkap());
-            holder.pekerjaan.setText(orderKosts.get(position).getUser().getPekerjaan());
-            holder.catatan.setText(orderKosts.get(position).getCatatan());
+            holder.namaLengkap.setText(": " + orderKosts.get(position).getUser().getNamaLengkap());
+            holder.pekerjaan.setText(": " + orderKosts.get(position).getUser().getPekerjaan());
+            holder.catatan.setText(": " + orderKosts.get(position).getCatatan());
 
             Glide.with(context).load(orderKosts.get(position).getUser().getImageUrl()).into(holder.userImage);
         }

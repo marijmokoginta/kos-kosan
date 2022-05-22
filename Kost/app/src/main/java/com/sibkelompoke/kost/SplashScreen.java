@@ -77,6 +77,7 @@ public class SplashScreen extends AppCompatActivity {
                 if (value != null) {
                     for (QueryDocumentSnapshot snapshot : value) {
                         OrderKost orderKost = snapshot.toObject(OrderKost.class);
+                        orderKost.setOrderId(snapshot.getId());
                         getTagihan(orderKost.getOrderId());
                     }
                 }
@@ -108,32 +109,21 @@ public class SplashScreen extends AppCompatActivity {
                 jmlTagihan = tagihan.getJumlahTagihan();
             }
 
-            if (tagihan.getJumlahTagihan() == jmlTagihan) {
-                Date date = tagihan.getTanggalTagihan();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
+            if (tagihan.getTanggalTagihan() != null) {
+                if (tagihan.getJumlahTagihan() == jmlTagihan) {
+                    Date date = tagihan.getTanggalTagihan();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
 
-                Date currentDate = new Date(System.currentTimeMillis());
-                Calendar currentCalendar = Calendar.getInstance();
-                currentCalendar.setTime(currentDate);
+                    Date currentDate = new Date(System.currentTimeMillis());
+                    Calendar currentCalendar = Calendar.getInstance();
+                    currentCalendar.setTime(currentDate);
 
-                if (currentCalendar.get(Calendar.MONTH) > calendar.get(Calendar.MONTH)) {
-                    int pastMonth = currentCalendar.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
-                    if (pastMonth == 1) {
-                        Tagihan tagihanBaru = new Tagihan();
-                        tagihanBaru.setJumlahTagihan(jmlTagihan + 1);
-
-                        calendar.add(Calendar.MONTH, 1);
-                        tagihanBaru.setTanggalTagihan(calendar.getTime());
-                        tagihanBaru.setOrderId(tagihan.getOrderId());
-                        tagihanBaru.setLunas(false);
-                        db.collection("tagihan").add(tagihanBaru).addOnSuccessListener(documentReference -> {
-                            Log.i(TAG, "sukses menambah tagihan");
-                        });
-                    } else {
-                        for (int i = 0; i < pastMonth; i++) {
+                    if (currentCalendar.get(Calendar.MONTH) > calendar.get(Calendar.MONTH)) {
+                        int pastMonth = currentCalendar.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
+                        if (pastMonth == 1) {
                             Tagihan tagihanBaru = new Tagihan();
-                            tagihanBaru.setJumlahTagihan(jmlTagihan + (i+1));
+                            tagihanBaru.setJumlahTagihan(jmlTagihan + 1);
 
                             calendar.add(Calendar.MONTH, 1);
                             tagihanBaru.setTanggalTagihan(calendar.getTime());
@@ -142,6 +132,19 @@ public class SplashScreen extends AppCompatActivity {
                             db.collection("tagihan").add(tagihanBaru).addOnSuccessListener(documentReference -> {
                                 Log.i(TAG, "sukses menambah tagihan");
                             });
+                        } else {
+                            for (int i = 0; i < pastMonth; i++) {
+                                Tagihan tagihanBaru = new Tagihan();
+                                tagihanBaru.setJumlahTagihan(jmlTagihan + (i + 1));
+
+                                calendar.add(Calendar.MONTH, 1);
+                                tagihanBaru.setTanggalTagihan(calendar.getTime());
+                                tagihanBaru.setOrderId(tagihan.getOrderId());
+                                tagihanBaru.setLunas(false);
+                                db.collection("tagihan").add(tagihanBaru).addOnSuccessListener(documentReference -> {
+                                    Log.i(TAG, "sukses menambah tagihan");
+                                });
+                            }
                         }
                     }
                 }

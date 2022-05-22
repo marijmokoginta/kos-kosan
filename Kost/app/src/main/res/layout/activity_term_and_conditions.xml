@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Ayo bergabung dengan kami\nagar mempermudah pemesanan kost"
+        android:textColor="@color/text_color"
+        android:text="@string/ayo_bergabung_dengan_kami_nagar_mempermudah_pemesanan_kost"
         android:textAlignment="center" />
 
     <TextView
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:fontFamily="@font/poppins"
+        android:textColor="@color/text_color"
         android:text="@string/term_and_conditions"/>
 
     <androidx.cardview.widget.CardView

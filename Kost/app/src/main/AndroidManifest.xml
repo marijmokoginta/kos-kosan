@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kost">
         <activity
+            android:name=".user_dashboard.InfoUser"
+            android:exported="false" />
+        <activity
+            android:name=".user_dashboard.CatatanUser"
+            android:exported="false" />
+        <activity
+            android:name=".admin_dashboard.EditKost"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user_dashboard.UserChat"
+            android:exported="false" />
+        <activity
             android:name=".user_dashboard.Pembayaran"
             android:exported="false" />
         <activity

@@ -27,18 +27,8 @@ public class UserService {
     boolean saved;
     public boolean save(User user) {
         db.collection("users").add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        saved = true;
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        saved = false;
-                    }
-                });
+                .addOnSuccessListener(documentReference -> saved = true)
+                .addOnFailureListener(e -> saved = false);
         return saved;
     }
 
@@ -48,17 +38,14 @@ public class UserService {
 
     public User findOne(String id) {
         db.collection("users").document(id).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot document = task.getResult();
-                        if (task.isSuccessful()) {
-                            user = new User(document.getString("username"),
-                                    document.getString("password"));
-                            user.setId(document.getId());
-                            user.setRole(document.getString("role"));
-                            user.setNoTelepon(document.getString("noTelepon"));
-                        }
+                .addOnCompleteListener(task -> {
+                    DocumentSnapshot document = task.getResult();
+                    if (task.isSuccessful()) {
+                        user = new User(document.getString("username"),
+                                document.getString("password"));
+                        user.setId(document.getId());
+                        user.setRole(document.getString("role"));
+                        user.setNoTelepon(document.getString("noTelepon"));
                     }
                 });
         return user;

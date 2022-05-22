@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class Kost implements Parcelable {
+    private String id;
     private ArrayList<String> imageUrl;
     private String namaKost;
     private String waktuBukaKost;
@@ -17,20 +18,23 @@ public class Kost implements Parcelable {
     private String catatanKost;
     private String kostId;
     private String userId;
-    private FasilitasKamar fasilitasKamar;
+    private ArrayList<FasilitasKamar> fasilitasKamar;
 
     public Kost (){}
 
     public Kost (String kostId) {
         this.kostId = kostId;
         imageUrl = new ArrayList<>();
+        fasilitasKamar = new ArrayList<>();
     }
 
     protected Kost(Parcel in) {
+        id = in.readString();
         imageUrl = in.createStringArrayList();
         namaKost = in.readString();
         waktuBukaKost = in.readString();
         tipeKost = in.readString();
+        alamat = in.readParcelable(Alamat.class.getClassLoader());
         harga = in.readString();
         jumlahKamar = in.readString();
         peraturanKost = in.readString();
@@ -50,6 +54,14 @@ public class Kost implements Parcelable {
             return new Kost[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
@@ -139,11 +151,11 @@ public class Kost implements Parcelable {
         this.catatanKost = catatanKost;
     }
 
-    public FasilitasKamar getFasilitasKamar() {
+    public ArrayList<FasilitasKamar> getFasilitasKamar() {
         return fasilitasKamar;
     }
 
-    public void setFasilitasKamar(FasilitasKamar fasilitasKamar) {
+    public void setFasilitasKamar(ArrayList<FasilitasKamar> fasilitasKamar) {
         this.fasilitasKamar = fasilitasKamar;
     }
 
@@ -154,10 +166,12 @@ public class Kost implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
         parcel.writeStringList(imageUrl);
         parcel.writeString(namaKost);
         parcel.writeString(waktuBukaKost);
         parcel.writeString(tipeKost);
+        parcel.writeParcelable(alamat, i);
         parcel.writeString(harga);
         parcel.writeString(jumlahKamar);
         parcel.writeString(peraturanKost);

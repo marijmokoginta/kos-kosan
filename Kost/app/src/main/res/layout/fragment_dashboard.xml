@@ -39,7 +39,8 @@
                 android:id="@+id/profilePic"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:background="@drawable/bg_error"
+                android:background="@drawable/bg_stroke"
+                android:scaleType="centerCrop"
                 android:src="@drawable/jarvis"/>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -203,12 +204,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardUseCompatPadding="true"
                         android:layout_weight="1"
+                        android:layout_marginEnd="-6dp"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="12dp">
                         <LinearLayout
@@ -238,6 +241,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_marginStart="-6dp"
                         app:cardUseCompatPadding="true"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="12dp">
@@ -269,12 +273,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="-12dp">
+                    android:layout_marginTop="-20dp">
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:cardUseCompatPadding="true"
+                        android:layout_marginEnd="-6dp"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="12dp">
                         <LinearLayout
@@ -305,6 +310,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:cardUseCompatPadding="true"
+                        android:layout_marginStart="-6dp"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="12dp">
                         <LinearLayout

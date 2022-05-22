@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.adapter.TagihanAdapter;
@@ -50,24 +51,13 @@ public class Pembayaran extends AppCompatActivity {
         daftarPembayaran.setAdapter(adapter);
         daftarPembayaran.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
-        db.collection("tagihan").whereEqualTo("orderId", orderKost.getOrderId()).addSnapshotListener(((value, error) -> {
+        db.collection("tagihan").whereEqualTo("orderId", orderKost.getOrderId()).orderBy("jumlahTagihan", Query.Direction.DESCENDING).addSnapshotListener(((value, error) -> {
             if (value != null) {
                 listPembayaran.clear();
                 for (QueryDocumentSnapshot snapshot : value) {
                     Tagihan tagihan = snapshot.toObject(Tagihan.class);
                     listPembayaran.add(tagihan);
-                }
-                if (listPembayaran.size() > 1) {
-                    for (int i = 0; i < listPembayaran.size() -1; i++) {
-                        for (int j = i+1; j < listPembayaran.size(); j++) {
-                            if (listPembayaran.get(i).getJumlahTagihan() < listPembayaran.get(j).getJumlahTagihan()) {
-                                Tagihan temp = listPembayaran.get(i);
-                                listPembayaran.set(i, listPembayaran.get(j));
-                                listPembayaran.set(j, temp);
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
+                    adapter.notifyDataSetChanged();
                 }
             }
         }));

@@ -35,31 +35,37 @@
                 android:layout_marginTop="8dp"
                 android:orientation="vertical">
                 <View
+                    android:id="@+id/v1"
                     android:layout_width="3dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="4dp"
                     android:background="@color/light_blue"/>
                 <View
+                    android:id="@+id/v2"
                     android:layout_width="3dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="4dp"
                     android:background="@color/light_blue"/>
                 <View
+                    android:id="@+id/v3"
                     android:layout_width="3dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="4dp"
                     android:background="@color/light_blue"/>
                 <View
+                    android:id="@+id/v4"
                     android:layout_width="3dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="4dp"
                     android:background="@color/light_blue"/>
                 <View
+                    android:id="@+id/v5"
                     android:layout_width="3dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="4dp"
                     android:background="@color/light_blue"/>
                 <View
+                    android:id="@+id/v6"
                     android:layout_width="3dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="4dp"
@@ -73,7 +79,6 @@
             android:layout_weight="4"
             android:orientation="horizontal"
             android:background="@drawable/bg_task_item"
-            android:backgroundTint="@color/light_blue"
             android:padding="12dp"
             android:layout_gravity="center_vertical">
             <LinearLayout
@@ -99,7 +104,7 @@
                     android:id="@+id/waktuPenundaan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/waktu_tertunda_2_hari"
+                    android:text=""
                     android:fontFamily="@font/poppins"/>
                 <TextView
                     android:id="@+id/tvLunas"
@@ -113,20 +118,37 @@
                     android:layout_gravity="end"
                     android:visibility="gone"
                     android:layout_margin="12dp"/>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnAksi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="@string/tandai_selesai"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textAllCaps="false"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:background="@drawable/bg_stroke"
-                    android:padding="8dp"
-                    android:layout_gravity="end"/>
+                    android:gravity="end"
+                    android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnWarning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="@string/beri_peringatan"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textAllCaps="false"
+                        android:padding="8dp"
+                        android:visibility="gone"
+                        android:layout_marginEnd="8dp"
+                        android:layout_gravity="end"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnAksi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="@string/tandai_selesai"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textAllCaps="false"
+                        android:padding="8dp"
+                        android:layout_gravity="end"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

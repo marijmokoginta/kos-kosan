@@ -93,6 +93,7 @@ public class KostService extends Service {
                     if (value != null) {
                         for (QueryDocumentSnapshot snapshot : value) {
                             kost = snapshot.toObject(Kost.class);
+                            kost.setId(snapshot.getId());
                         }
                     }
                 });

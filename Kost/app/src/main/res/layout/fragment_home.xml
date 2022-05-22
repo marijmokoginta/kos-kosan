@@ -67,6 +67,7 @@
                     android:id="@+id/viewArea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     android:background="@color/white"/>
             </androidx.cardview.widget.CardView>
 
@@ -82,7 +83,8 @@
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:src="@drawable/ic_house"
+                    android:src="@drawable/jumbotron"
+                    android:scaleType="centerCrop"
                     android:background="@color/white"/>
             </androidx.cardview.widget.CardView>
 
@@ -126,6 +128,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/kostArea1"
                     android:layout_width="match_parent"
+                    android:overScrollMode="never"
                     android:layout_height="match_parent" />
 
             </LinearLayout>
@@ -152,6 +155,7 @@
                     android:id="@+id/kostArea2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:overScrollMode="never"
                     android:layout_marginTop="8dp"/>
 
             </LinearLayout>
@@ -163,14 +167,19 @@
                 android:layout_marginTop="8dp"
                 android:elevation="4dp"
                 app:cardUseCompatPadding="true"
-                app:cardCornerRadius="8dp">
-
-                <ImageView
+                app:cardCornerRadius="4dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/light_gray"
-                    android:src="@drawable/ic_house"/>
-
+                    android:layout_height="wrap_content">
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/promosi"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintDimensionRatio="3:2"
+                        android:background="@color/light_gray"
+                        android:src="@drawable/ic_house"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- kost filter area 3 -->

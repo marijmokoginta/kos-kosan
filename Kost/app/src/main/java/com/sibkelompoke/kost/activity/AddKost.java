@@ -1,5 +1,6 @@
 package com.sibkelompoke.kost.activity;
 
+import static com.sibkelompoke.kost.util.KostKonstan.AC;
 import static com.sibkelompoke.kost.util.KostKonstan.ALAT_MASAK;
 import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_BOALEMO;
 import static com.sibkelompoke.kost.util.KostKonstan.KABUPATEN_BONEBOLANGO;
@@ -14,7 +15,9 @@ import static com.sibkelompoke.kost.util.KostKonstan.KOST_WANITA;
 import static com.sibkelompoke.kost.util.KostKonstan.KOST_PRIA;
 import static com.sibkelompoke.kost.util.KostKonstan.KOTA_GORONTALO;
 import static com.sibkelompoke.kost.util.KostKonstan.LEMARI;
+import static com.sibkelompoke.kost.util.KostKonstan.SISTEM_KEAMANAN;
 import static com.sibkelompoke.kost.util.KostKonstan.TELEVISI;
+import static com.sibkelompoke.kost.util.KostKonstan.WIFI;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +50,7 @@ import com.sibkelompoke.kost.service.UserService;
 import com.sibkelompoke.kost.model.Alamat;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.User;
+import com.sibkelompoke.kost.util.LoadingProgress;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,15 +90,24 @@ public class AddKost extends AppCompatActivity {
             KABUPATEN_GORONTALO, KABUPATEN_GORONTALO_UTARA,
             KABUPATEN_BOALEMO, KABUPATEN_POHUWATO};
 
+    private FasilitasAdapter fasilitasAdapter;
+
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_kost);
 
+
+        Intent getData = getIntent();
+        userId = getData.getStringExtra("userId");
+
         kostService = new KostService();
         userService = new UserService();
 
         kostPhotosUri = new ArrayList<>();
+        fasilitas = new ArrayList<>();
 
         initView();
         ArrayAdapter<String> tipeKostAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_list_item, tpKost);
@@ -103,26 +116,31 @@ public class AddKost extends AppCompatActivity {
         ArrayAdapter<String> kabupatenAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_list_item, listKabupaten);
         kabupaten.setAdapter(kabupatenAdapter);
 
-        fasilitasKamar();
-        FasilitasAdapter fasilitasAdapter = new FasilitasAdapter(getApplicationContext(), fasilitas);
+//        fasilitasKamar();
+        fasilitasAdapter = new FasilitasAdapter(getApplicationContext(), fasilitas);
         fasilitasKamar.setAdapter(fasilitasAdapter);
         fasilitasKamar.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3, RecyclerView.VERTICAL, false));
+
 
         kostPhotos.setFactory(() -> new ImageView(getApplicationContext()));
 
         kosts = kostService.findAll();
         users = userService.findAll();
-        setListener();
+
+        eventListener();
     }
 
-    private void setListener () {
-        Intent getData = getIntent();
-        String userId = getData.getStringExtra("userId");
+    private void eventListener() {
+        kost = new Kost(userId + new Date().getTime());
 
+//        fasilitasAdapter.setOnItemClickListener((view, fasilitasKamar) -> {
+//            if (fasilitasKamar != null) kost.setFasilitasKamar(fasilitasKamar);
+//        });
+
+        LoadingProgress progress = new LoadingProgress(this);
         btnBuatKost.setOnClickListener(v -> {
             if (dataValidate(v)) {
-                kost = new Kost(userId + new Date().getTime());
-
+                progress.showDialog();
                 StorageReference imageFolder = FirebaseStorage.getInstance().getReference().child("kost image");
                 Uri imgUri = kostPhotosUri.get(0);
                 final StorageReference imageName = imageFolder.child("IMG" + new Date().getTime() + ".jpg");
@@ -131,6 +149,7 @@ public class AddKost extends AppCompatActivity {
                         imageName.getDownloadUrl().addOnSuccessListener(uri -> {
                             kost.getImageUrl().add(uri.toString());
                             saveData(kost, userId, v, uri.toString());
+                            progress.dismissDialog();
                         }));
             }
 
@@ -218,17 +237,18 @@ public class AddKost extends AppCompatActivity {
         }
 
         if (!kostService.addOne(kost)) {
-            for (User user : users) {
-                if (user.getId().equals(userId)) {
-                    user.setRole("admin");
-                    userService.edit(userId, user);
+            for (User usr : users) {
+                if (usr.getId().equals(userId)) {
+                    usr.setRole("admin");
+                    userService.edit(userId, usr);
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("user", usr);
+                    startActivity(intent);
+                    finish();
                 }
             }
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("user", new User());
-            startActivity(intent);
-            finish();
         } else {
             getSnackBar(v, "Terjadi Kesalahan");
         }
@@ -261,13 +281,15 @@ public class AddKost extends AppCompatActivity {
     }
 
     private void fasilitasKamar() {
-        fasilitas = new ArrayList<>();
         fasilitas.add(new FasilitasKamar(R.drawable.ic_house, KAMAR_MANDI_DALAM));
         fasilitas.add(new FasilitasKamar(R.drawable.ic_house, KLOSET_DUDUK));
         fasilitas.add(new FasilitasKamar(R.drawable.ic_house, TELEVISI));
         fasilitas.add(new FasilitasKamar(R.drawable.ic_house, LEMARI));
         fasilitas.add(new FasilitasKamar(R.drawable.ic_house, ALAT_MASAK));
         fasilitas.add(new FasilitasKamar(R.drawable.ic_house, KASUR));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, WIFI));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, SISTEM_KEAMANAN));
+        fasilitas.add(new FasilitasKamar(R.drawable.ic_house, AC));
     }
 
     private void getSnackBar(View v, String message) {
@@ -305,6 +327,8 @@ public class AddKost extends AppCompatActivity {
             getSnackBar(v, "lengkapi data diatas");
         } else if (kostPhotosUri.size() <= 0) {
             getSnackBar(v, "silahkan tambahkan gambar");
+        } else if (kost.getFasilitasKamar() == null) {
+            getSnackBar(v, "silahkan pilih fasilitas kamar");
         } else {
             return true;
         }

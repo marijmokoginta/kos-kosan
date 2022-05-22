@@ -38,7 +38,7 @@
                 app:cardCornerRadius="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginTop="-18dp">
+                android:layout_marginTop="-24dp">
                 <LinearLayout
                     android:id="@+id/detailWrap"
                     android:gravity="center"
@@ -47,16 +47,33 @@
                     android:background="@color/white"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/namaKostDetail"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:textColor="@color/text_color"
-                        android:textSize="22sp"
-                        android:text="Nama Kost"
-                        android:layout_margin="16dp"/>
+                        android:layout_margin="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/namaKostDetail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="@color/text_color"
+                            android:textSize="22sp"
+                            android:text="Nama Kost"/>
+                        <TextView
+                            android:id="@+id/tipeKostDetail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins"
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp"
+                            android:text="Kost Pria"/>
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/mapDetail"
@@ -113,31 +130,7 @@
                     android:text=": 07.00 - 22.00 Wita"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/poppins"
-                    android:textColor="@color/text_color"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="@string/tipe_kost"/>
-                <TextView
-                    android:id="@+id/tipeKostDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:textColor="@color/text_color"
-                    android:textSize="18sp"
-                    android:text=": Kost Pria"/>
-            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -295,6 +288,7 @@
                 android:background="@color/green"
                 android:padding="11dp">
                 <ImageButton
+                    android:id="@+id/btnChat"
                     android:layout_width="28dp"
                     android:layout_height="0dp"
                     app:layout_constraintDimensionRatio="1:1"

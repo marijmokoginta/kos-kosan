@@ -5,6 +5,7 @@ import static com.sibkelompoke.kost.util.KostKonstan.USER;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TagihanAdapter extends RecyclerView.Adapter<TagihanAdapter.TagihanViewHolder> {
-    private Context context;
-    private ArrayList<Tagihan> daftarTagihan;
-    private String role;
+    private final Context context;
+    private final ArrayList<Tagihan> daftarTagihan;
+    private final String role;
 
     private OnBtnAksiClickListener onBtnAksiClickListener;
 
@@ -46,7 +47,7 @@ public class TagihanAdapter extends RecyclerView.Adapter<TagihanAdapter.TagihanV
         return new TagihanViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull TagihanViewHolder holder, int position) {
         @SuppressLint("SimpleDateFormat")
@@ -61,36 +62,103 @@ public class TagihanAdapter extends RecyclerView.Adapter<TagihanAdapter.TagihanV
         currentCalendar.setTime(currentDate);
 
         holder.tanggalTagihan.setText(sdf.format(calendar.getTime()));
-        holder.tagihanKe.setText("Pembayaran bulan ke " + String.valueOf(daftarTagihan.get(position).getJumlahTagihan()));
-
-        if (currentCalendar.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) {
-            if (currentCalendar.get(Calendar.DAY_OF_MONTH) > calendar.get(Calendar.DAY_OF_MONTH)) {
-                int waktuPenundaan = currentCalendar.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH);
-                holder.waktuPenundaan.setText("Waktu penundaan pembayaran > " + String.valueOf(waktuPenundaan));
-            } else if (currentCalendar.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
-                int waktuPembayaran = calendar.get(Calendar.DAY_OF_MONTH) - currentCalendar.get(Calendar.DAY_OF_MONTH);
-                holder.waktuPenundaan.setText("Waktu pembayaran tinggal " + String.valueOf(waktuPembayaran) + "lagi!");
-            } else if (currentCalendar.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
-                if (role.equals(USER)) {
-                    holder.waktuPenundaan.setText("Waktunya membayar kost!");
-                } else if (role.equals(ADMIN)) {
-                    holder.waktuPenundaan.setText("Hari ini adalah waktu pembayaran kost");
-                }
-            }
-        }
+        holder.tagihanKe.setText("Pembayaran bulan ke " + daftarTagihan.get(position).getJumlahTagihan());
 
         if (daftarTagihan.get(position).isLunas()) {
+            // set waktu penundaan
+            holder.waktuPenundaan.setText(daftarTagihan.get(position).getWaktuPenundaan());
+
             holder.statusPembayaran.setImageResource(R.drawable.ic_check);
             holder.tvLunas.setVisibility(View.VISIBLE);
             holder.btnAksi.setVisibility(View.GONE);
+            holder.btnWarning.setVisibility(View.GONE);
+
+            // color green
+            holder.tvLunas.setTextColor(Color.rgb(26, 176, 176));
+            holder.boxItem.setBackgroundColor(Color.rgb(178, 228, 228));
+            holder.statusWrap.setCardBackgroundColor(Color.rgb(26, 176, 176));
+
+            setLineColor(holder, 178, 228, 228);
         } else {
+            // set waktu penundaan
+            if (currentCalendar.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) {
+                if (currentCalendar.get(Calendar.DAY_OF_MONTH) > calendar.get(Calendar.DAY_OF_MONTH)) {
+                    int waktuPenundaan = currentCalendar.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH);
+                    holder.waktuPenundaan.setText("Waktu penundaan pembayaran " + waktuPenundaan + " hari");
+                } else if (currentCalendar.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
+                    int waktuPembayaran = calendar.get(Calendar.DAY_OF_MONTH) - currentCalendar.get(Calendar.DAY_OF_MONTH);
+                    holder.waktuPenundaan.setText("Waktu pembayaran tinggal " + waktuPembayaran + "lagi!");
+                } else if (currentCalendar.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
+                    if (role.equals(USER)) {
+                        holder.waktuPenundaan.setText("Waktunya membayar kost!");
+                    } else if (role.equals(ADMIN)) {
+                        holder.waktuPenundaan.setText("Hari ini adalah waktu pembayaran kost");
+                    }
+                }
+            } else if (currentCalendar.get(Calendar.MONTH) > calendar.get(Calendar.MONTH)) {
+                if ((currentCalendar.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)) == 1) {
+                    if (currentCalendar.get(Calendar.DAY_OF_MONTH) <= calendar.get(Calendar.DAY_OF_MONTH)) {
+                        int daysInLastMonth, daysInThisMonth, total;
+                        daysInLastMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH) - currentCalendar.get(Calendar.DAY_OF_MONTH);
+                        daysInThisMonth = calendar.get(Calendar.DAY_OF_MONTH) - currentCalendar.getMinimum(Calendar.DAY_OF_MONTH);
+                        total = daysInLastMonth + daysInThisMonth;
+                        holder.waktuPenundaan.setText("Waktu penundaan pembayaran " + total + " hari");
+                    }
+                } else {
+                    holder.waktuPenundaan.setText("Waktu penundaan pembayaran " + (currentCalendar.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)) + " bulan");
+                }
+            }
+
+            // update objek tagihan
+            if (currentCalendar.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                    currentCalendar.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
+                daftarTagihan.get(position).setWaktuPenundaan("Pembayaran tepat waktu");
+            } else {
+                daftarTagihan.get(position).setWaktuPenundaan(holder.waktuPenundaan.getText().toString());
+            }
+
+            // set layout color
+            // color blue
+            holder.boxItem.setBackgroundColor(Color.rgb(237, 244, 254));
+            holder.statusWrap.setCardBackgroundColor(Color.rgb(0, 98, 255));
+            holder.btnAksi.setBackgroundColor(Color.rgb(0, 98, 255));
+
+            if (currentCalendar.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) {
+                if ((currentCalendar.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH)) >= 10) {
+                    holder.statusPembayaran.setImageResource(R.drawable.ic_warning);
+                    // color red
+                    holder.boxItem.setBackgroundColor(Color.rgb(253, 200, 211));
+                    holder.statusWrap.setCardBackgroundColor(Color.rgb(250, 90, 125));
+                    holder.btnAksi.setBackgroundColor(Color.rgb(250, 90, 125));
+
+                    setLineColor(holder, 253, 200, 211);
+                }
+            } else if (currentCalendar.get(Calendar.MONTH) > calendar.get(Calendar.MONTH)) {
+                holder.statusPembayaran.setImageResource(R.drawable.ic_warning);
+                // color red
+                holder.boxItem.setBackgroundColor(Color.rgb(253, 200, 211));
+                holder.statusWrap.setCardBackgroundColor(Color.rgb(250, 90, 125));
+                holder.btnAksi.setBackgroundColor(Color.rgb(250, 90, 125));
+
+                setLineColor(holder, 253, 200, 211);
+            }
+
             if (role.equals(USER)) {
                 holder.btnAksi.setVisibility(View.GONE);
+                holder.btnWarning.setVisibility(View.GONE);
                 holder.tvLunas.setVisibility(View.VISIBLE);
                 holder.tvLunas.setText("Belum dibayar");
+
+                holder.tvLunas.setTextColor(Color.rgb(250, 90, 125));
             } else if (role.equals(ADMIN)) {
-                if ((currentCalendar.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH)) >= 15) {
-                    holder.btnAksi.setText("Beri peringatan");
+                if ((currentCalendar.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH)) >= 10) {
+                    holder.btnWarning.setVisibility(View.VISIBLE);
+                    holder.btnWarning.setText("Beri peringatan");
+                    holder.btnWarning.setBackgroundColor(Color.rgb(250, 90, 125));
+                } else if (currentCalendar.get(Calendar.MONTH) > calendar.get(Calendar.MONTH)) {
+                    holder.btnWarning.setVisibility(View.VISIBLE);
+                    holder.btnWarning.setText("Beri peringatan");
+                    holder.btnWarning.setBackgroundColor(Color.rgb(250, 90, 125));
                 }
             }
         }
@@ -114,7 +182,9 @@ public class TagihanAdapter extends RecyclerView.Adapter<TagihanAdapter.TagihanV
         ImageView statusPembayaran;
         CardView statusWrap;
         LinearLayout boxItem;
-        Button btnAksi;
+        Button btnAksi, btnWarning;
+
+        View v1, v2, v3, v4, v5, v6;
 
         public TagihanViewHolder(View view) {
             super(view);
@@ -126,12 +196,29 @@ public class TagihanAdapter extends RecyclerView.Adapter<TagihanAdapter.TagihanV
             statusWrap = view.findViewById(R.id.statusWrap);
             boxItem = view.findViewById(R.id.boxItem);
             btnAksi = view.findViewById(R.id.btnAksi);
+            btnWarning = view.findViewById(R.id.btnWarning);
             tvLunas = view.findViewById(R.id.tvLunas);
+
+            v1 = view.findViewById(R.id.v1);
+            v2 = view.findViewById(R.id.v2);
+            v3 = view.findViewById(R.id.v3);
+            v4 = view.findViewById(R.id.v4);
+            v5 = view.findViewById(R.id.v5);
+            v6 = view.findViewById(R.id.v6);
 
             btnAksi.setOnClickListener(v ->  {
                 if (onBtnAksiClickListener != null)
                 onBtnAksiClickListener.onBtnClick(view, daftarTagihan.get(getAdapterPosition()));
             });
         }
+    }
+
+    private void setLineColor(TagihanViewHolder holder, int red, int green, int blue) {
+        holder.v1.setBackgroundColor(Color.rgb(red, green, blue));
+        holder.v2.setBackgroundColor(Color.rgb(red, green, blue));
+        holder.v3.setBackgroundColor(Color.rgb(red, green, blue));
+        holder.v4.setBackgroundColor(Color.rgb(red, green, blue));
+        holder.v5.setBackgroundColor(Color.rgb(red, green, blue));
+        holder.v6.setBackgroundColor(Color.rgb(red, green, blue));
     }
 }

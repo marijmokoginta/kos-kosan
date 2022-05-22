@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/light_blue"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_margin="12dp"
-                android:background="@color/white">
+                android:background="@color/light_blue">
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,6 +35,7 @@
                         android:id="@+id/userOrderImage"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/jarvis"/>
                 </androidx.cardview.widget.CardView>
                 <TextView
@@ -45,13 +46,13 @@
                     android:text="Username"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/text_color"/>
                 <ImageButton
                     android:id="@+id/showDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerInside"
-                    android:background="@color/white"
+                    android:background="@color/light_blue"
                     android:layout_weight="4"
                     android:src="@drawable/ic_circle_chevron_down" />
             </LinearLayout>
@@ -65,6 +66,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="match_parent"
@@ -72,7 +74,7 @@
                         android:layout_weight="2"
                         android:text="Nama Lengkap"
                         android:fontFamily="@font/poppins"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/text_color"/>
                     <TextView
                         android:id="@+id/userOrderNamaLengkap"
                         android:layout_width="match_parent"
@@ -80,11 +82,12 @@
                         android:layout_weight="1"
                         android:text=": siapa dimana"
                         android:fontFamily="@font/poppins"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/text_color"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="match_parent"
@@ -92,7 +95,7 @@
                         android:layout_weight="2"
                         android:text="Pekerjaan"
                         android:fontFamily="@font/poppins"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/text_color"/>
                     <TextView
                         android:id="@+id/userOrderPekerjaan"
                         android:layout_width="match_parent"
@@ -100,11 +103,12 @@
                         android:layout_weight="1"
                         android:text=": Mahasiswa"
                         android:fontFamily="@font/poppins"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/text_color"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="match_parent"
@@ -112,7 +116,7 @@
                         android:layout_weight="2"
                         android:text="Catatan"
                         android:fontFamily="@font/poppins"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/text_color"/>
                     <TextView
                         android:id="@+id/userOrderCatatan"
                         android:layout_width="match_parent"
@@ -120,16 +124,19 @@
                         android:layout_weight="1"
                         android:text=": catatan"
                         android:fontFamily="@font/poppins"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/text_color"/>
                 </LinearLayout>
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnKonfirmasi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    android:layout_margin="16dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_stroke"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_margin="14dp"
                     android:text="Korfirmasi"
                     android:textAllCaps="false"
+                    android:textAlignment="center"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/white"/>
             </LinearLayout>

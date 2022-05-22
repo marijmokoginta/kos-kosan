@@ -3,6 +3,8 @@ package com.sibkelompoke.kost.activity;
 import static com.sibkelompoke.kost.util.KostKonstan.ADMIN;
 import static com.sibkelompoke.kost.util.KostKonstan.DEFAULT_IMG_URL;
 import static com.sibkelompoke.kost.util.KostKonstan.GUEST;
+import static com.sibkelompoke.kost.util.KostKonstan.ORDER_KOST_COLLECTION;
+import static com.sibkelompoke.kost.util.KostKonstan.USERS_COLLECTION;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,6 +30,7 @@ import com.sibkelompoke.kost.model.FasilitasKamar;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.OrderKost;
 import com.sibkelompoke.kost.model.User;
+import com.sibkelompoke.kost.util.LoadingProgress;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,12 +44,13 @@ public class DetailKost extends AppCompatActivity {
     private TextView namaKost, waktuBukaKost, tipeKost, alamat, peraturan, catatan, harga, jumlahKamar;
     private ImageView kostImage;
     private Button btnPesanKamar;
+    private ImageButton btnChat;
     private RecyclerView fasilitasKamar;
 
     // var
     private Kost kost;
     private String alamatKost;
-    private User user;
+    private User user, userDestination;
     private ArrayList<FasilitasKamar> fasilitas;
 
     @SuppressLint({"SetTextI18n", "InflateParams"})
@@ -78,13 +82,18 @@ public class DetailKost extends AppCompatActivity {
 
         ImageButton btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> finish());
+
+        db.collection(USERS_COLLECTION).document(kost.getUserId()).get().addOnSuccessListener(documentSnapshot -> {
+            userDestination = documentSnapshot.toObject(User.class);
+            eventListener();
+        });
     }
 
     @SuppressLint("SetTextI18n")
     private void setData () {
         namaKost.setText(kost.getNamaKost());
         waktuBukaKost.setText(": " + kost.getWaktuBukaKost());
-        tipeKost.setText(": " + kost.getTipeKost());
+        tipeKost.setText(kost.getTipeKost());
         alamat.setText(": " + alamatKost);
         peraturan.setText(": " + kost.getPeraturanKost());
         catatan.setText(": " + kost.getCatatanKost());
@@ -96,7 +105,10 @@ public class DetailKost extends AppCompatActivity {
         } else {
             Glide.with(getApplicationContext()).load(DEFAULT_IMG_URL).into(kostImage);
         }
+    }
 
+    private void eventListener() {
+        LoadingProgress progress = new LoadingProgress(this);
         btnPesanKamar.setOnClickListener(v -> {
             Log.i(TAG, "order kost : user role -> " + user.getRole());
             OrderKost orderKost = new OrderKost(user.getId(), kost.getKostId(), kost.getUserId());
@@ -124,8 +136,9 @@ public class DetailKost extends AppCompatActivity {
                 if (jml <= 0) {
                     Snackbar.make(v, "Maaf saat ini tidak ada kamar yang tersedia", Snackbar.LENGTH_SHORT).show();
                 } else {
+                    progress.showDialog();
                     // mengambil semua data user yang mengorder kost
-                    db.collection("orderKost").get().addOnCompleteListener(task -> {
+                    db.collection(ORDER_KOST_COLLECTION).get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             String kostId, userId;
                             boolean notOrdered = true;
@@ -140,6 +153,7 @@ public class DetailKost extends AppCompatActivity {
                                 if (kostId.equals(orderKost.getKostId()) && userId.equals(orderKost.getUserId())) {
                                     Snackbar.make(v, "Anda telah memesan kost ini", Snackbar.LENGTH_SHORT).show();
                                     notOrdered = false;
+                                    progress.dismissDialog();
                                 }
                             }
 
@@ -153,12 +167,28 @@ public class DetailKost extends AppCompatActivity {
                                             } else {
                                                 Snackbar.make(v, "Gagal! Silahkan coba lagi nanti", Snackbar.LENGTH_SHORT).show();
                                             }
+                                            progress.dismissDialog();
                                         });
                             }
                         }
                     });
                 }
             }
+        });
+
+        btnChat.setOnClickListener(v -> {
+            Intent intent;
+            if (user.getRole().equals(GUEST)) {
+                intent = new Intent(getApplicationContext(), Login.class);
+                intent.putExtra("errorMessage", "Silahkan login terlebih dahulu");
+            } else {
+                intent = new Intent(getApplicationContext(), ChatActivity.class);
+                intent.putExtra("userId", user.getId());
+                intent.putExtra("userDestinationId", kost.getUserId());
+                intent.putExtra("userDest", userDestination);
+                intent.putExtra("kost", kost);
+            }
+            startActivity(intent);
         });
     }
 
@@ -175,5 +205,6 @@ public class DetailKost extends AppCompatActivity {
         fasilitasKamar = findViewById(R.id.fasilitasKamar);
 
         btnPesanKamar = findViewById(R.id.btnPesanKost);
+        btnChat = findViewById(R.id.btnChat);
     }
 }

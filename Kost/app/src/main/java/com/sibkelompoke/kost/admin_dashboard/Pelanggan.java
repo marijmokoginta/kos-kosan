@@ -50,12 +50,13 @@ public class Pelanggan extends Fragment {
             if (orderKost != null) {
                 Intent intent = new Intent(getContext(), PelangganDetail.class);
                 intent.putExtra("orderId", orderKost.getOrderId());
+                intent.putExtra("kostId", kostId);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
         }));
 
-        Log.i(TAG, "kostId : " +kostId);
+        Log.i(TAG, "kostId : " + kostId);
 
         db.collection("orderKost").whereEqualTo("ownerKostId", user.getId()).addSnapshotListener(((value, error) -> {
             if (value != null) {

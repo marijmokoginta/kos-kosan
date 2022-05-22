@@ -1,6 +1,9 @@
 package com.sibkelompoke.kost.adapter;
 
+import static com.sibkelompoke.kost.util.KostKonstan.KOSTS_COLLECTION;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.OrderKost;
 import com.sibkelompoke.kost.model.Tagihan;
+import com.sibkelompoke.kost.util.LoadingProgress;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +61,7 @@ public class DaftarPelangganAdapter extends RecyclerView.Adapter<DaftarPelanggan
 
         if (!orderKosts.get(position).isContract()) {
             holder.noKamarWrap.setVisibility(View.GONE);
+            holder.tvBelumKontrak.setVisibility(View.VISIBLE);
         }
     }
 
@@ -73,7 +80,7 @@ public class DaftarPelangganAdapter extends RecyclerView.Adapter<DaftarPelanggan
 
     public class DaftarPelangganViewHolder extends RecyclerView.ViewHolder {
         ImageView userImg;
-        TextView username, noKamar;
+        TextView username, noKamar, tvBelumKontrak;
         LinearLayout notContract, noKamarWrap;
         EditText etNoKamar;
         Button btnContract, btnClose;
@@ -91,16 +98,21 @@ public class DaftarPelangganAdapter extends RecyclerView.Adapter<DaftarPelanggan
             btnContract = view.findViewById(R.id.btnContract);
             btnClose = view.findViewById(R.id.closeDetail);
             boxItem = view.findViewById(R.id.boxItem);
+            tvBelumKontrak = view.findViewById(R.id.tvBelumKontrak);
 
             view.setOnClickListener(v -> {
                 if (onItemClickListener != null) {
                     if (!orderKosts.get(getAdapterPosition()).isContract()) {
                         notContract.setVisibility(View.VISIBLE);
 
+                        LoadingProgress progress = new LoadingProgress((Activity) context);
+
                         btnContract.setOnClickListener(view1 -> {
                             if (etNoKamar.getText().length() == 0) {
                                 etNoKamar.setError("silahkan isi bagian ini!");
                             } else {
+                                progress.showDialog();
+
                                 OrderKost orderKost = orderKosts.get(getAdapterPosition());
                                 orderKost.setContract(true);
                                 orderKost.setOnContract(new Date(System.currentTimeMillis()));
@@ -119,9 +131,25 @@ public class DaftarPelangganAdapter extends RecyclerView.Adapter<DaftarPelanggan
                                 tagihan.setRole(orderKost.getUser().getRole());
 
                                 db.collection("tagihan").add(tagihan).addOnSuccessListener(documentReference -> {
+                                        progress.dismissDialog();
                                         Snackbar.make(view1, "Berhasil melakukan kontrak", Snackbar.LENGTH_SHORT).show();
                                         notContract.setVisibility(View.GONE);
+                                        tvBelumKontrak.setVisibility(View.GONE);
                                 }).addOnFailureListener(e -> Snackbar.make(view1, "Gagal melakukan kontrak", Snackbar.LENGTH_SHORT).show());
+
+                                db.collection(KOSTS_COLLECTION).whereEqualTo("kostId", orderKost.getKostId()).get().addOnSuccessListener(documentSnapshots -> {
+                                    for (QueryDocumentSnapshot snapshot : documentSnapshots) {
+                                        Kost kost = snapshot.toObject(Kost.class);
+                                        kost.setId(snapshot.getId());
+
+                                        int jumlahKamar = Integer.parseInt(kost.getJumlahKamar());
+                                        if (jumlahKamar > 0) {
+                                            jumlahKamar -= 1;
+                                        }
+                                        kost.setJumlahKamar(String.valueOf(jumlahKamar));
+                                        db.collection(KOSTS_COLLECTION).document(kost.getId()).set(kost);
+                                    }
+                                });
                             }
                         });
                         btnClose.setOnClickListener(view1 -> notContract.setVisibility(View.GONE));

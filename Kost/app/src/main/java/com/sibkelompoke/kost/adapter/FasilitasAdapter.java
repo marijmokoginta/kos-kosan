@@ -1,10 +1,12 @@
 package com.sibkelompoke.kost.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +19,10 @@ import com.sibkelompoke.kost.model.FasilitasKamar;
 import java.util.ArrayList;
 
 public class FasilitasAdapter extends RecyclerView.Adapter<FasilitasAdapter.FasilitasViewHolder> {
-    private Context context;
-    private ArrayList<FasilitasKamar> fasilitas;
+    private final Context context;
+    private final ArrayList<FasilitasKamar> fasilitas;
+
+    private OnItemClickListener onItemClickListener;
 
     public FasilitasAdapter(Context context, ArrayList<FasilitasKamar> fasilitas) {
         this.context = context;
@@ -44,15 +48,45 @@ public class FasilitasAdapter extends RecyclerView.Adapter<FasilitasAdapter.Fasi
         return fasilitas.size();
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(View view, ArrayList<FasilitasKamar> fasilitasKamar);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public class FasilitasViewHolder extends RecyclerView.ViewHolder {
-        ImageView fasilitasImg;
+        ImageView fasilitasImg, check;
         TextView fasilitasName;
+        LinearLayout boxItem;
 
         public FasilitasViewHolder(View view) {
             super(view);
 
             fasilitasImg = view.findViewById(R.id.fasilitasImg);
             fasilitasName = view.findViewById(R.id.fasilitasName);
+            check = view.findViewById(R.id.check);
+            boxItem = view.findViewById(R.id.boxItem);
+
+            ArrayList<FasilitasKamar> fasilitasKamars = new ArrayList<>();
+
+            view.setOnClickListener(v -> {
+                if (check.getVisibility() == View.GONE) {
+                    fasilitasKamars.add(fasilitas.get(getAdapterPosition()));
+                    check.setVisibility(View.VISIBLE);
+                    boxItem.setBackgroundColor(Color.rgb(198, 219, 255));
+                } else if (check.getVisibility() == View.VISIBLE) {
+                    for (int i = 0; i < fasilitasKamars.size(); i++) {
+                        if (fasilitasKamars.get(i).equals(fasilitas.get(getAdapterPosition()))) {
+                            fasilitasKamars.remove(i);
+                        }
+                    }
+                    check.setVisibility(View.GONE);
+                    boxItem.setBackgroundColor(Color.WHITE);
+                }
+                if (onItemClickListener != null) onItemClickListener.onItemClick(view, fasilitasKamars);
+            });
         }
     }
 }

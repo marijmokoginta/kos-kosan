@@ -37,7 +37,10 @@ import com.sibkelompoke.kost.model.User;
 import com.sibkelompoke.kost.service.KostService;
 import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.service.OrderService;
+import com.sibkelompoke.kost.user_dashboard.CatatanUser;
+import com.sibkelompoke.kost.user_dashboard.InfoUser;
 import com.sibkelompoke.kost.user_dashboard.Pembayaran;
+import com.sibkelompoke.kost.user_dashboard.UserChat;
 
 public class DashboardFragment extends Fragment {
     private final String TAG = "DashboardFragment";
@@ -146,9 +149,11 @@ public class DashboardFragment extends Fragment {
 
     private void adminMenuListener(String userId, User user) {
         adminMenuListKost.setOnClickListener(v -> {
+            Kost kost = kostService.findByUserId(userId);
             Intent in = new Intent(getContext(), AdminKost.class);
             in.putExtra("userId", userId);
             in.putExtra("user", user);
+            in.putExtra("kostId", kost.getId());
             startActivity(in);
         });
         adminMenuOrder.setOnClickListener(v -> {
@@ -172,15 +177,22 @@ public class DashboardFragment extends Fragment {
         });
 
         menuPesan.setOnClickListener(v -> {
-
+            Intent in = new Intent(getContext(), UserChat.class);
+            in.putExtra("user", user);
+            in.putExtra("orderKost", order);
+            startActivity(in);
         });
 
         menuCatatan.setOnClickListener(v -> {
-
+            Intent in = new Intent(getContext(), CatatanUser.class);
+            in.putExtra("user", user);
+            startActivity(in);
         });
 
         menuInfo.setOnClickListener(v -> {
-
+            Intent in = new Intent(getContext(), InfoUser.class);
+            in.putExtra("user", user);
+            startActivity(in);
         });
     }
 

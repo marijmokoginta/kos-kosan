@@ -7,7 +7,7 @@ public class Tagihan{
     private String orderId;
     private Date tanggalTagihan;
     private int jumlahTagihan;
-    private int waktuPenundaan;
+    private String waktuPenundaan;
     private String role;
     private boolean lunas;
     private boolean past2Bulan;
@@ -60,11 +60,11 @@ public class Tagihan{
         this.jumlahTagihan = jumlahTagihan;
     }
 
-    public int getWaktuPenundaan() {
+    public String getWaktuPenundaan() {
         return waktuPenundaan;
     }
 
-    public void setWaktuPenundaan(int waktuPenundaan) {
+    public void setWaktuPenundaan(String waktuPenundaan) {
         this.waktuPenundaan = waktuPenundaan;
     }
 

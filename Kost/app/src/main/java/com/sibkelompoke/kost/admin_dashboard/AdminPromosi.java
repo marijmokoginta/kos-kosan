@@ -22,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.model.Promosi;
+import com.sibkelompoke.kost.util.LoadingProgress;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,20 +71,24 @@ public class AdminPromosi extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "select img"), PICK_IMAGE_CODE);
         });
 
+        LoadingProgress progress = new LoadingProgress(this);
         btnUpload.setOnClickListener(view -> {
             if (imgUri != null) {
+                progress.showDialog();
                 StorageReference imgFolder = FirebaseStorage.getInstance().getReference().child("promosi");
-                StorageReference imgName = imgFolder.child("PROMOSI" + new Date(System.currentTimeMillis()) + ".jpg");
+                StorageReference imgName = imgFolder.child("PROMOSI" + new Date().getTime() + ".jpg");
 
                 imgName.putFile(imgUri).addOnSuccessListener(taskSnapshot -> {
                     imgName.getDownloadUrl().addOnSuccessListener(uri -> {
                         promosi.setUserId(userId);
                         promosi.setImgUrl(uri.toString());
                         save();
+                        progress.dismissDialog();
                     });
                 }).addOnFailureListener(e -> {
                     e.printStackTrace();
                     Snackbar.make(view, "Gagal mengupload gambar. silahkan coba lagi nanti!", Snackbar.LENGTH_SHORT).show();
+                    progress.dismissDialog();
                 });
             }
         });

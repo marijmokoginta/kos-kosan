@@ -4,76 +4,228 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.Register">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/usernameWrap"
+    <LinearLayout
+        android:id="@+id/actBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/colorPrimary"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/etUsername"
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"
+            android:padding="8dp"/>
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="username/no telepon"
-            android:fontFamily="@font/poppins"/>
+            android:textAlignment="center"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="@string/daftar"
+            android:layout_marginStart="-32dp"/>
+    </LinearLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordWrap"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/usernameWrap">
-
-        <EditText
-            android:id="@+id/etPassword"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@+id/actBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="password"
-            android:fontFamily="@font/poppins"
-            android:inputType="textPassword"/>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/header_bg"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Avatar"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="4dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listAvatar"
+                    android:layout_width="match_parent"
+                    android:overScrollMode="never"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageWrap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-60dp"
+                app:cardCornerRadius="120dp"
+                app:layout_constraintTop_toBottomOf="@+id/header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+                <ImageView
+                    android:id="@+id/userImage"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/user"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/teleponWrap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/passwordWrap">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pickImgWrap"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="-50dp"
+                android:layout_marginTop="-35dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="44dp"
+                app:layout_constraintTop_toBottomOf="@+id/imageWrap"
+                app:layout_constraintStart_toEndOf="@+id/imageWrap">
+                <ImageButton
+                    android:id="@+id/pickImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_camera"/>
+            </androidx.cardview.widget.CardView>
 
-        <EditText
-            android:id="@+id/etNoTelepon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="no telepon"
-            android:fontFamily="@font/poppins"
-            android:inputType="phone"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/namaLengkapWrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/light_gray"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/imageWrap">
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:textAllCaps="false"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/teleponWrap"
-        app:layout_constraintStart_toStartOf="parent"/>
+                <EditText
+                    android:id="@+id/etNamaLengkap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nama_lengkap"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/poppins"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pekerjaanWrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/light_gray"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/namaLengkapWrap">
+
+                <EditText
+                    android:id="@+id/etPekerjaan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/pekerjaan"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/poppins"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/teleponWrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/light_gray"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/pekerjaanWrap">
+
+                <EditText
+                    android:id="@+id/etNoTelepon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/no_telepon"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="phone"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/usernameWrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/light_gray"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/teleponWrap">
+
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/poppins"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordWrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/light_gray"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/usernameWrap">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="textPassword"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/daftar"
+                android:textAllCaps="false"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="70dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="80dp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_stroke"
+                android:backgroundTint="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@+id/passwordWrap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

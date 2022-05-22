@@ -5,6 +5,7 @@ import static com.sibkelompoke.kost.util.KostKonstan.KAMPUS_1_UNG;
 import static com.sibkelompoke.kost.util.KostKonstan.KAMPUS_4_UNG;
 import static com.sibkelompoke.kost.util.KostKonstan.KOTA_GORONTALO;
 import static com.sibkelompoke.kost.util.KostKonstan.LIMBOTO;
+import static com.sibkelompoke.kost.util.KostKonstan.PROMOSI_COLLECTION;
 import static com.sibkelompoke.kost.util.KostKonstan.SUWAWA;
 
 import android.annotation.SuppressLint;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.IBinder;
 import android.view.LayoutInflater;
@@ -28,11 +30,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.activity.DetailKost;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.activity.ResultActivity;
 import com.sibkelompoke.kost.adapter.KostAdapter;
 import com.sibkelompoke.kost.adapter.KostAreaAdapter;
+import com.sibkelompoke.kost.adapter.PromosiAdapter;
+import com.sibkelompoke.kost.model.Promosi;
 import com.sibkelompoke.kost.model.User;
 import com.sibkelompoke.kost.service.KostService;
 import com.sibkelompoke.kost.model.Kost;
@@ -42,6 +48,8 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private KostService kostService;
     private boolean bounded;
@@ -54,14 +62,18 @@ public class HomeFragment extends Fragment {
     private TextView search;
     private ImageButton btnNotofication;
     private ImageView banner;
+    private ViewPager promosi;
 
     private ArrayList<KostArea> areas;
+    private ArrayList<Promosi> promosis;
 
     @SuppressLint({"ResourceAsColor", "NotifyDataSetChanged", "SetTextI18n"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         user = getArguments().getParcelable("user");
+
+        promosis = new ArrayList<>();
 
         kostService = new KostService();
 
@@ -106,6 +118,10 @@ public class HomeFragment extends Fragment {
         kostService.getKostFilterByKabupaten(KABUPATEN_GORONTALO, kostsFiltered2, kostFiltered2Adapter);
         adapterClickListener(kostFiltered2Adapter);
         titleKostArea3.setText("Kost Area Limboto :");
+
+        PromosiAdapter promosiAdapter = new PromosiAdapter(getContext(), promosis);
+        promosi.setAdapter(promosiAdapter);
+        getImgUrls(promosiAdapter);
 
         return view;
     }
@@ -183,6 +199,7 @@ public class HomeFragment extends Fragment {
 
         banner = v.findViewById(R.id.banner);
         viewArea = v.findViewById(R.id.viewArea);
+        promosi = v.findViewById(R.id.promosi);
 
         search = v.findViewById(R.id.tvSearch);
         btnNotofication = v.findViewById(R.id.btnNotification);
@@ -191,6 +208,19 @@ public class HomeFragment extends Fragment {
     private void eventListener() {
         search.setOnClickListener(v -> {
             startActivity(new Intent(getContext(),ResultActivity.class));
+        });
+    }
+
+    private void getImgUrls(PromosiAdapter promosiAdapter) {
+        db.collection(PROMOSI_COLLECTION).addSnapshotListener((value, error) -> {
+           if (value != null) {
+               promosis.clear();
+               for (QueryDocumentSnapshot snapshot : value) {
+                   Promosi promosi = snapshot.toObject(Promosi.class);
+                   promosis.add(promosi);
+                   promosiAdapter.notifyDataSetChanged();
+               }
+           }
         });
     }
 }

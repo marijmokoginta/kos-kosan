@@ -2,6 +2,8 @@ package com.sibkelompoke.kost.main_menu;
 
 import static android.content.ContentValues.TAG;
 
+import static com.sibkelompoke.kost.util.KostKonstan.ADMIN;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 public class AccountFragment extends Fragment {
     private Button btnLogin, btnRegister;
     private Button btnLogout, btnAddKost, btnEditAccount;
-    private TextView tvUsername;
+    private TextView tvUsername, tvPekerjaan;
     private ImageView profilePic;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -71,29 +73,21 @@ public class AccountFragment extends Fragment {
             btnAddKost = view.findViewById(R.id.addKost);
             btnEditAccount = view.findViewById(R.id.editAccount);
             tvUsername = view.findViewById(R.id.accUsername);
+            tvPekerjaan = view.findViewById(R.id.accPekerjaan);
             profilePic = view.findViewById(R.id.profilePic);
 
             tvUsername.setText(user.getUsername());
+            tvPekerjaan.setText(user.getPekerjaan());
             Glide.with(requireContext()).load(user.getImageUrl()).into(profilePic);
 
+            if (user.getRole().equals(ADMIN)) {
+                btnAddKost.setVisibility(View.GONE);
+            }
+
             btnAddKost.setOnClickListener(v -> {
-                Intent intent;
-                boolean firstTime = true;
-
-                for (Kost kost : kosts) {
-                    if (kost.getKostId().equals(userId)) {
-                        intent = new Intent(getContext(), AddKost.class);
-                        intent.putExtra("userId", userId);
-                        startActivity(intent);
-                        firstTime = false;
-                    }
-                }
-
-                if (firstTime) {
-                    intent = new Intent(getContext(), TermAndConditions.class);
-                    intent.putExtra("userId", userId);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getContext(), TermAndConditions.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
             });
 
             btnLogout.setOnClickListener(v -> {
@@ -108,13 +102,9 @@ public class AccountFragment extends Fragment {
                 Log.i(TAG, "logout berhasil. user id : " + userId);
             });
         } else {
-            btnLogin.setOnClickListener(v -> {
-                startActivity(new Intent(getContext(), Login.class));
-            });
+            btnLogin.setOnClickListener(v -> startActivity(new Intent(getContext(), Login.class)));
 
-            btnRegister.setOnClickListener(v -> {
-                startActivity(new Intent(getContext(), Register.class));
-            });
+            btnRegister.setOnClickListener(v -> startActivity(new Intent(getContext(), Register.class)));
         }
 
         return view;

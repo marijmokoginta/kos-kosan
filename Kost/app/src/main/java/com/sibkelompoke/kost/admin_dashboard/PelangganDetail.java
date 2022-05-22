@@ -1,5 +1,7 @@
 package com.sibkelompoke.kost.admin_dashboard;
 
+import static com.sibkelompoke.kost.util.KostKonstan.KOSTS_COLLECTION;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +19,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.adapter.TagihanAdapter;
+import com.sibkelompoke.kost.model.Kost;
 import com.sibkelompoke.kost.model.OrderKost;
 import com.sibkelompoke.kost.model.Tagihan;
 import com.sibkelompoke.kost.model.User;
+import com.sibkelompoke.kost.util.DialogDecision;
+import com.sibkelompoke.kost.util.LoadingProgress;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +49,9 @@ public class PelangganDetail extends AppCompatActivity {
     private ArrayList<Tagihan> listTagihan;
     private User user;
 
+    private String orderId = "";
+    private String kostId = "";
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +60,10 @@ public class PelangganDetail extends AppCompatActivity {
 
         listTagihan = new ArrayList<>();
 
-        String orderId = "";
-
         Intent getData = getIntent();
         if (getData != null) {
             orderId = getData.getStringExtra("orderId");
+            kostId = getData.getStringExtra("kostId");
             user = getData.getParcelableExtra("user");
         }
 
@@ -70,11 +78,16 @@ public class PelangganDetail extends AppCompatActivity {
         daftarTagihan.setAdapter(adapter);
         daftarTagihan.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
+        LoadingProgress progress = new LoadingProgress(PelangganDetail.this);
+
         adapter.setOnBtnAksiClickListener(((view, tagihan) -> {
             if (!tagihan.isLunas()) {
+                progress.showDialog();
                 tagihan.setLunas(true);
+
                 db.collection("tagihan").document(tagihan.getTagihanId()).set(tagihan).addOnSuccessListener(unused -> {
                     Toast.makeText(getApplicationContext(), "Pembayaran lunas", Toast.LENGTH_SHORT).show();
+                    progress.dismissDialog();
                 });
             }
         }));
@@ -86,24 +99,10 @@ public class PelangganDetail extends AppCompatActivity {
                     Tagihan tagihan = snapshot.toObject(Tagihan.class);
                     tagihan.setTagihanId(snapshot.getId());
                     listTagihan.add(tagihan);
-                }
-                if (listTagihan.size() > 1) {
-
-                    // mengurutkan berdasarkan tagihan terbaru
-                    for (int i = 0; i < listTagihan.size() -1; i++) {
-                        for (int j = i+1; j < listTagihan.size(); j++) {
-                            if (listTagihan.get(i).getJumlahTagihan() < listTagihan.get(j).getJumlahTagihan()) {
-                                Tagihan temp = listTagihan.get(i);
-                                listTagihan.set(i, listTagihan.get(j));
-                                listTagihan.set(j, temp);
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
+                    adapter.notifyDataSetChanged();
                 }
             }
         }));
-
         btnBack.setOnClickListener(v -> finish());
     }
 
@@ -140,19 +139,37 @@ public class PelangganDetail extends AppCompatActivity {
         }
 
         akhiriKontrak.setOnClickListener(v -> {
-            db.collection("tagihan").whereEqualTo("orderId", orderKost.getOrderId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                    db.collection("tagihan").document(snapshot.getId()).delete().addOnFailureListener(e ->
-                                    Toast.makeText(getApplicationContext(), "Gagal mengakhiri kontrak", Toast.LENGTH_SHORT).show());
-                }
-            }).addOnFailureListener(e -> {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Gagal mengakhiri kontrak", Toast.LENGTH_SHORT).show();
-            });
+            DialogDecision decision = new DialogDecision(this, "");
+            decision.showDialog();
+            decision.setOnBtnYesClickListener(() -> {
+                LoadingProgress loadingProgress = new LoadingProgress(this);
+                loadingProgress.showDialog();
+                db.collection("tagihan").whereEqualTo("orderId", orderKost.getOrderId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        db.collection("tagihan").document(snapshot.getId()).delete().addOnFailureListener(e -> {
+                                loadingProgress.dismissDialog();
+                                Toast.makeText(getApplicationContext(), "Gagal mengakhiri kontrak", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }).addOnFailureListener(e -> {
+                    loadingProgress.dismissDialog();
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Gagal mengakhiri kontrak", Toast.LENGTH_SHORT).show();
+                });
 
-            db.collection("orderKost").document(orderKost.getOrderId()).delete().addOnSuccessListener(unused1 -> {
-                Toast.makeText(getApplicationContext(), "Berhasil mengakhiri kontrak", Toast.LENGTH_SHORT).show();
-                finish();
+                db.collection(KOSTS_COLLECTION).whereEqualTo("kostId", kostId).get().addOnSuccessListener(documentSnapshots -> {
+                    for (QueryDocumentSnapshot snapshot : documentSnapshots) {
+                        Kost kost = snapshot.toObject(Kost.class);
+                        int jml = Integer.parseInt(kost.getJumlahKamar());
+                        kost.setJumlahKamar(String.valueOf(jml + 1));
+                        db.collection(KOSTS_COLLECTION).document(snapshot.getId()).set(kost);
+                    }
+                });
+
+                db.collection("orderKost").document(orderKost.getOrderId()).delete().addOnSuccessListener(unused1 -> {
+                    Toast.makeText(getApplicationContext(), "Berhasil mengakhiri kontrak", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
             });
         });
     }

@@ -47,20 +47,17 @@ public class AdminKost extends AppCompatActivity {
             user = getData.getParcelableExtra("user");
         }
 
-        db.collection("kosts").whereEqualTo("userId", userId).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                kost = snapshot.toObject(Kost.class);
-                kost.setKostId(snapshot.getId());
-                Log.i(TAG, snapshot.getId());
-                setData(userId);
+        db.collection("kosts").whereEqualTo("userId", userId).addSnapshotListener((value, error) -> {
+            if (value != null) {
+                for (QueryDocumentSnapshot snapshot : value) {
+                    kost = snapshot.toObject(Kost.class);
+                    kost.setId(snapshot.getId());
+                    Log.i(TAG, snapshot.getId());
+                    setData(userId);
+                    eventListener(userId);
+                }
             }
-        }).addOnFailureListener(e -> {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Gagal memuat", Toast.LENGTH_SHORT).show();
-            finish();
         });
-
-        eventListener(userId);
     }
 
     private void initView() {
@@ -77,18 +74,19 @@ public class AdminKost extends AppCompatActivity {
 
     private void eventListener(String userId) {
         bundle = new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putParcelable("user", user);
+        bundle.putParcelable("kost", kost);
 
         btnPelanggan.setOnClickListener(v -> {
             fragment = new Pelanggan();
             bundle.putString("kostId", kost.getKostId());
-            bundle.putString("userId", userId);
-            bundle.putParcelable("user", user);
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.menuKostKonten, fragment).commit();
         });
 
         btnChat.setOnClickListener(v -> {
-            fragment = new Chat();
+            fragment = new AdminChat();
             bundle.putString("kostId", kost.getKostId());
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.menuKostKonten, fragment).commit();
@@ -97,6 +95,7 @@ public class AdminKost extends AppCompatActivity {
         btnPengaturan.setOnClickListener(v -> {
             fragment = new Pengaturan();
             bundle.putString("kostId", kost.getKostId());
+            Log.i(TAG, kost.getKostId());
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.menuKostKonten, fragment).commit();
         });
@@ -123,6 +122,10 @@ public class AdminKost extends AppCompatActivity {
         dfBundle.putString("userId", userId);
         dfBundle.putParcelable("user", user);
         pelanggan.setArguments(dfBundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.menuKostKonten, pelanggan).commit();
+        try {
+            getSupportFragmentManager().beginTransaction().replace(R.id.menuKostKonten, pelanggan).commit();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 }

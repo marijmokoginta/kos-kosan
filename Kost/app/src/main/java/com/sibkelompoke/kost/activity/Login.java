@@ -2,6 +2,7 @@ package com.sibkelompoke.kost.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.service.UserService;
 import com.sibkelompoke.kost.model.User;
+import com.sibkelompoke.kost.util.LoadingProgress;
 
 import java.util.ArrayList;
 
@@ -28,9 +30,10 @@ public class Login extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
-    private TextView errorText;
+    private TextView errorText, tvDaftar;
     private ImageButton btnBack;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,7 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         errorText = findViewById(R.id.error_text);
         btnBack = findViewById(R.id.btnBack);
+        tvDaftar = findViewById(R.id.tvDaftar);
 
         try {
             Intent getData = getIntent();
@@ -82,10 +86,13 @@ public class Login extends AppCompatActivity {
                     }
                 }
                 if (!isExist) {
-                    Snackbar.make(view, "username/password salah", Snackbar.LENGTH_SHORT).show();
+                    errorText.setText("username/password salah");
+                    errorText.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+        tvDaftar.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Register.class)));
 
         btnBack.setOnClickListener(v -> finish());
     }
