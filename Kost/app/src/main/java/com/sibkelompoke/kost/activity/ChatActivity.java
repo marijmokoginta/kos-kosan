@@ -128,9 +128,9 @@ public class ChatActivity extends AppCompatActivity {
                            Chat chatTemp = chats.get(i);
                            chats.set(i, chats.get(j));
                            chats.set(j, chatTemp);
-                           adapter.notifyDataSetChanged();
                        }
                    }
+                           adapter.notifyDataSetChanged();
                }
                chatView.scrollToPosition(chats.size()-1);
            }

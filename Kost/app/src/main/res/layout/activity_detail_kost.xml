@@ -235,7 +235,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:background="@drawable/bg_stroke"
+                android:background="@drawable/bg_gray_stroke_radius"
                 android:padding="8dp"
                 android:orientation="horizontal">
                 <TextView

@@ -45,7 +45,8 @@
                 android:hint="@string/cari_kost"
                 android:textSize="14sp"
                 android:textColorHint="@color/text_color"
-                android:inputType="textPersonName"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
                 android:focusable="true"
                 android:focusedByDefault="true"/>
         </LinearLayout>

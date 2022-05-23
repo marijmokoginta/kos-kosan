@@ -89,4 +89,5 @@
     <string name="edit_profil">Edit Profil</string>
     <string name="app_version_1">App Version : 1</string>
     <string name="edit_kost">Edit Kost</string>
+    <string name="laporkan_bug">Laporkan Bug</string>
 </resources>

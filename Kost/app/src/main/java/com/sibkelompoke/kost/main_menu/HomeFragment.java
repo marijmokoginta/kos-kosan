@@ -123,6 +123,13 @@ public class HomeFragment extends Fragment {
         promosi.setAdapter(promosiAdapter);
         getImgUrls(promosiAdapter);
 
+        kostAreaAdapter.setOnItemClickListener((view1, kostArea) -> {
+            Intent intent = new Intent(getContext(),ResultActivity.class);
+            intent.putExtra("user", user);
+            intent.putExtra("area", kostArea.getLocation());
+            startActivity(intent);
+        });
+
         return view;
     }
 
@@ -207,7 +214,9 @@ public class HomeFragment extends Fragment {
 
     private void eventListener() {
         search.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(),ResultActivity.class));
+            Intent intent = new Intent(getContext(),ResultActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
         });
     }
 

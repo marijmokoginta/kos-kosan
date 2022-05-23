@@ -4,8 +4,12 @@ import static android.content.ContentValues.TAG;
 
 import static com.sibkelompoke.kost.util.KostKonstan.ADMIN;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,7 +39,7 @@ import com.sibkelompoke.kost.model.User;
 import java.util.ArrayList;
 
 public class AccountFragment extends Fragment {
-    private Button btnLogin, btnRegister;
+    private Button btnLogin, btnRegister, btnLaporkanBug;
     private Button btnLogout, btnAddKost, btnEditAccount;
     private TextView tvUsername, tvPekerjaan;
     private ImageView profilePic;
@@ -67,14 +71,9 @@ public class AccountFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnCLogin);
         btnRegister = view.findViewById(R.id.btnCRegister);
 
-        //init view in layout when user loggedin
+        // init view in layout when user loggedin
         if (isLoggedin) {
-            btnLogout = view.findViewById(R.id.btnLogout);
-            btnAddKost = view.findViewById(R.id.addKost);
-            btnEditAccount = view.findViewById(R.id.editAccount);
-            tvUsername = view.findViewById(R.id.accUsername);
-            tvPekerjaan = view.findViewById(R.id.accPekerjaan);
-            profilePic = view.findViewById(R.id.profilePic);
+            initView(view);
 
             tvUsername.setText(user.getUsername());
             tvPekerjaan.setText(user.getPekerjaan());
@@ -88,6 +87,18 @@ public class AccountFragment extends Fragment {
                 Intent intent = new Intent(getContext(), TermAndConditions.class);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
+            });
+
+            btnEditAccount.setOnClickListener(v ->
+                    Toast.makeText(getContext(), "Dalam pengembangan", Toast.LENGTH_SHORT).show());
+
+            btnLaporkanBug.setOnClickListener(v -> {
+                PackageManager pm = requireContext().getPackageManager();
+                String phoneNumber = "+6287840108124";
+                String message = "Terdapat Bug\nusername : " + user.getUsername() + "\nJenis Bug : ";
+
+                Intent waIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + message));
+                startActivity(waIntent);
             });
 
             btnLogout.setOnClickListener(v -> {
@@ -108,6 +119,16 @@ public class AccountFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void initView(View view) {
+        btnLogout = view.findViewById(R.id.btnLogout);
+        btnAddKost = view.findViewById(R.id.addKost);
+        btnEditAccount = view.findViewById(R.id.editAccount);
+        tvUsername = view.findViewById(R.id.accUsername);
+        tvPekerjaan = view.findViewById(R.id.accPekerjaan);
+        profilePic = view.findViewById(R.id.profilePic);
+        btnLaporkanBug = view.findViewById(R.id.btn1);
     }
 
 }
