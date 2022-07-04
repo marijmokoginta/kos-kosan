@@ -16,6 +16,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,10 +35,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.activity.DetailKost;
 import com.sibkelompoke.kost.R;
+import com.sibkelompoke.kost.activity.NotificationActivity;
 import com.sibkelompoke.kost.activity.ResultActivity;
 import com.sibkelompoke.kost.adapter.KostAdapter;
 import com.sibkelompoke.kost.adapter.KostAreaAdapter;
 import com.sibkelompoke.kost.adapter.PromosiAdapter;
+import com.sibkelompoke.kost.model.NotificationModel;
 import com.sibkelompoke.kost.model.Promosi;
 import com.sibkelompoke.kost.model.User;
 import com.sibkelompoke.kost.service.KostService;
@@ -63,9 +66,13 @@ public class HomeFragment extends Fragment {
     private ImageButton btnNotofication;
     private ImageView banner;
     private ViewPager promosi;
+    private CardView countNotification;
+    private TextView count;
 
     private ArrayList<KostArea> areas;
     private ArrayList<Promosi> promosis;
+
+    private NotificationModel model;
 
     @SuppressLint({"ResourceAsColor", "NotifyDataSetChanged", "SetTextI18n"})
     @Override
@@ -128,6 +135,20 @@ public class HomeFragment extends Fragment {
             intent.putExtra("user", user);
             intent.putExtra("area", kostArea.getLocation());
             startActivity(intent);
+        });
+
+        db.collection("notification").whereEqualTo("userId", user.getId()).addSnapshotListener((value, error) -> {
+            if (value != null) {
+                int cnt = 0;
+                for (QueryDocumentSnapshot snapshot : value) {
+                    model = snapshot.toObject(NotificationModel.class);
+                    if (!model.isRead()) {
+                        cnt++;
+                        countNotification.setVisibility(View.VISIBLE);
+                        count.setText(String.valueOf(cnt));
+                    }
+                }
+            }
         });
 
         return view;
@@ -210,12 +231,27 @@ public class HomeFragment extends Fragment {
 
         search = v.findViewById(R.id.tvSearch);
         btnNotofication = v.findViewById(R.id.btnNotification);
+
+        countNotification = v.findViewById(R.id.countNotification);
+        count = v.findViewById(R.id.count);
     }
 
     private void eventListener() {
         search.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(),ResultActivity.class);
             intent.putExtra("user", user);
+            startActivity(intent);
+        });
+
+        btnNotofication.setOnClickListener(v -> {
+            db.collection("notification").whereEqualTo("userId", user.getId()).get().addOnSuccessListener(documentSnapshots -> {
+               for (QueryDocumentSnapshot snapshot : documentSnapshots){
+                   model.setRead(true);
+                   db.collection("notification").document(snapshot.getId()).set(model);
+               }
+            });
+            Intent intent = new Intent(getContext(), NotificationActivity.class);
+            intent.putExtra("userId", user.getId());
             startActivity(intent);
         });
     }

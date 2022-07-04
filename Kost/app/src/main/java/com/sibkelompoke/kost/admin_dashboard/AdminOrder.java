@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.adapter.OrderAdapter;
+import com.sibkelompoke.kost.model.NotificationModel;
 import com.sibkelompoke.kost.model.OrderKost;
 import com.sibkelompoke.kost.service.OrderService;
 
 import java.util.ArrayList;
 
 public class AdminOrder extends AppCompatActivity {
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private RecyclerView allOrder;
     private ImageButton btnBack;
@@ -42,6 +45,11 @@ public class AdminOrder extends AppCompatActivity {
         adapter.setOnConfirmClickListener((view, orderKost) -> {
             orderKost.setConfirm(true);
             orderService.updateOrder(orderKost.getOrderId(), orderKost);
+            NotificationModel model = new NotificationModel();
+            model.setUserId(orderKost.getUserId());
+            model.setTitle("Pesanan Kamar Kost Anda Di Konfirmasi");
+            model.setMessage("Silahkan tunggu pemilik kost untuk melakukan kontrak");
+            db.collection("notification").add(model);
         });
 
         btnBack.setOnClickListener(v -> finish());

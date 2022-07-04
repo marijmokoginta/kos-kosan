@@ -23,11 +23,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sibkelompoke.kost.R;
 import com.sibkelompoke.kost.model.Kost;
+import com.sibkelompoke.kost.model.NotificationModel;
 import com.sibkelompoke.kost.model.OrderKost;
 import com.sibkelompoke.kost.model.Tagihan;
 import com.sibkelompoke.kost.util.LoadingProgress;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DaftarPelangganAdapter extends RecyclerView.Adapter<DaftarPelangganAdapter.DaftarPelangganViewHolder> {
@@ -150,6 +153,16 @@ public class DaftarPelangganAdapter extends RecyclerView.Adapter<DaftarPelanggan
                                         db.collection(KOSTS_COLLECTION).document(kost.getId()).set(kost);
                                     }
                                 });
+
+                                NotificationModel model = new NotificationModel();
+                                model.setUserId(orderKost.getUserId());
+                                model.setTitle("Memulai Kontrak");
+
+                                @SuppressLint("SimpleDateFormat")
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                                model.setMessage("Pembayaran di mulai sejak awal kontrak dan setiap tanggal " +
+                                        sdf.format(new Date(System.currentTimeMillis())));
+                                db.collection("notification").add(model);
                             }
                         });
                         btnClose.setOnClickListener(view1 -> notContract.setVisibility(View.GONE));
