@@ -116,7 +116,7 @@ public class DashboardFragment extends Fragment {
                                             userKostInf.setVisibility(View.GONE);
                                             userNotOrdered.setVisibility(View.VISIBLE);
                                         }
-                                        userMenuListener(user, orderKost);
+                                        userMenuListener(user, orderKost, kost);
                                     }
                                 }
                             }));
@@ -168,7 +168,7 @@ public class DashboardFragment extends Fragment {
         });
     }
 
-    private void userMenuListener(User user, OrderKost order) {
+    private void userMenuListener(User user, OrderKost order, Kost kost) {
         menuPembayaran.setOnClickListener(v -> {
             Intent in = new Intent(getContext(), Pembayaran.class);
             in.putExtra("user", user);
@@ -192,6 +192,7 @@ public class DashboardFragment extends Fragment {
         menuInfo.setOnClickListener(v -> {
             Intent in = new Intent(getContext(), InfoUser.class);
             in.putExtra("user", user);
+            in.putExtra("kost", kost);
             startActivity(in);
         });
     }

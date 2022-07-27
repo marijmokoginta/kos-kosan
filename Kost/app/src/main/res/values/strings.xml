@@ -90,4 +90,5 @@
     <string name="app_version_1">App Version : 1</string>
     <string name="edit_kost">Edit Kost</string>
     <string name="laporkan_bug">Laporkan Bug</string>
+    <string name="nama_kost">Nama Kost</string>
 </resources>
