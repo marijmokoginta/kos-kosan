@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageWrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:elevation="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/kostImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintDimensionRatio="5:3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_house"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvTipeKost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/text_color"
+                android:text="Kost Pria"
+                android:textSize="14sp"
+                android:padding="4dp"
+                android:background="@drawable/bg_stroke"
+                app:layout_constraintTop_toBottomOf="@+id/alamatKost"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/alamatKost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/text_color"
+                app:drawableStartCompat="@drawable/ic_location"
+                android:drawablePadding="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/imageWrap"/>
+
+
+            <TextView
+                android:id="@+id/tvNamaKost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Nama Kos"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/alamatKost"/>
+
+            <TextView
+                android:id="@+id/tvJamBukaKost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/text_color"
+                android:text="buka pukul 07.00 - 22.00 Wita"
+                app:layout_constraintTop_toBottomOf="@+id/tvNamaKost"/>
+
+            <TextView
+                android:id="@+id/hargaKamar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                android:text="Rp.500000"
+                app:layout_constraintTop_toBottomOf="@+id/tvJamBukaKost"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
